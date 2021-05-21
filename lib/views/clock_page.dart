@@ -76,19 +76,39 @@ class _ClockPageState extends State<ClockPage> {
                       fontSize: 24,
                       fontWeight: FontWeight.w500),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 8),
                 Row(
                   children: <Widget>[
                     Icon(
                       Icons.language,
                       color: Colors.white,
                     ),
-                    SizedBox(width: 16),
+                    SizedBox(width: 10),
                     Text(
                       'UTC' + offsetSign + timezoneString,
                       style: TextStyle(color: Colors.white, fontSize: 14),
                     ),
+                   
                   ],
+                ), 
+                SizedBox(height: 8),
+
+                Expanded(
+                  child: Align(
+                    alignment: FractionalOffset.bottomCenter,
+                        child: Column(
+                          children: [
+                            Text(
+                              'Sapienta Iris',
+                              style: TextStyle(color: Colors.white, fontSize: 16),
+                            ),
+                            Text(
+                              'Subscription Manager Application [May 2021]',
+                              style: TextStyle(color: Colors.white, fontSize: 8),
+                            ),
+                          ],
+                        ),
+                      ),
                 ),
               ],
             ),

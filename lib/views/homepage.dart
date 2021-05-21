@@ -4,6 +4,7 @@ import 'package:clock_app/enums.dart';
 import 'package:clock_app/models/menu_info.dart';
 import 'package:clock_app/views/alarm_page.dart';
 import 'package:clock_app/views/clock_page.dart';
+import 'package:clock_app/views/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -36,6 +37,8 @@ class _HomePageState extends State<HomePage> {
                   return ClockPage();
                 else if (value.menuType == MenuType.alarm)
                   return AlarmPage();
+                else if (value.menuType == MenuType.profile)
+                  return ProfilePage();
                 else
                   return Container(
                     child: RichText(

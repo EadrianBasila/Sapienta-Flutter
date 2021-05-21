@@ -6,6 +6,8 @@ final String tableAlarm = 'alarm';
 final String columnId = 'id';
 final String columnTitle = 'title';
 final String columnDateTime = 'alarmDateTime';
+final String columnPlanTitle = 'planTitle';
+final String columnPlanCost = 'planCost';
 final String columnPending = 'isPending';
 final String columnColorIndex = 'gradientColorIndex';
 
@@ -41,6 +43,8 @@ class AlarmHelper {
           $columnId integer primary key autoincrement, 
           $columnTitle text not null,
           $columnDateTime text not null,
+          $columnPlanTitle text not null,
+          $columnPlanCost text not null,
           $columnPending integer,
           $columnColorIndex integer)
         ''');

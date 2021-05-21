@@ -16,14 +16,15 @@ class AlarmPage extends StatefulWidget {
 class _AlarmPageState extends State<AlarmPage> {
   DateTime _alarmTime;
   String _alarmTimeString;
+  String _subscriptionTitle; //new string parameter
+  String _planCost; //new string parameter
   bool _isRepeatSelected = false;
   AlarmHelper _alarmHelper = AlarmHelper();
-  String _subscriptionTitle;
 
+  final TextEditingController myController1 = TextEditingController();
+  final TextEditingController myController2 = TextEditingController();
   Future<List<AlarmInfo>> _alarms;
   List<AlarmInfo> _currentAlarms;
-
-  final _controller = ScrollController();
 
   @override
   void initState() {
@@ -38,12 +39,15 @@ class _AlarmPageState extends State<AlarmPage> {
   void loadAlarms() {
     _alarms = _alarmHelper.getAlarms();
     if (mounted) setState(() {});
-    _controller.animateTo(
-      _controller.position.maxScrollExtent,
-      duration: Duration(seconds: 1),
-      curve: Curves.fastOutSlowIn,
-    
-    );
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    myController1.dispose();
+    myController2.dispose();
+    super.dispose();
   }
 
   @override
@@ -61,14 +65,16 @@ class _AlarmPageState extends State<AlarmPage> {
                 fontSize: 24),
           ),
           Expanded(
+            flex: 2,
             child: FutureBuilder<List<AlarmInfo>>(
               future: _alarms,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   _currentAlarms = snapshot.data;
-
                   return ListView(
                     children: snapshot.data.map<Widget>((alarm) {
+                      var planCost = alarm.planCost;
+                      var planTitle = alarm.planTitle;
                       var alarmTime =
                           DateFormat('hh:mm aa').format(alarm.alarmDateTime);
                       var gradientColor = GradientTemplate
@@ -87,8 +93,8 @@ class _AlarmPageState extends State<AlarmPage> {
                             BoxShadow(
                               color: gradientColor.last.withOpacity(0.4),
                               blurRadius: 8,
-                              spreadRadius: 2,
-                              offset: Offset(4, 4),
+                              spreadRadius: 1,
+                              //offset: Offset(4, 4),
                             ),
                           ],
                           borderRadius: BorderRadius.all(Radius.circular(24)),
@@ -122,11 +128,24 @@ class _AlarmPageState extends State<AlarmPage> {
                                 ),
                               ],
                             ),
-                            Text(
-                              'Every Month',
-                              style: TextStyle(
-                                color: Colors.white,
-                              ),
+                            Row(
+                              children: [
+                                Text(
+                                  planTitle,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  'Cost: $planCost',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 14),
+                                ),
+                              ],
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -135,7 +154,7 @@ class _AlarmPageState extends State<AlarmPage> {
                                   alarmTime,
                                   style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 24,
+                                      fontSize: 12,
                                       fontWeight: FontWeight.w700),
                                 ),
                                 IconButton(
@@ -236,59 +255,61 @@ class _AlarmPageState extends State<AlarmPage> {
                                                 value: _isRepeatSelected,
                                               ),
                                             ),
-                                            // Theme(
-                                            //   data: Theme.of(context).copyWith(primaryColor: Colors.white),
-                                            //   child: TextFormField(
-                                            //         validator: (input) {
-                                            //           if (input.isEmpty) {
-                                            //             return 'Enter Susbcription Name.';
-                                            //           }
-                                            //           return null;
-                                            //         },
-                                            //         decoration: InputDecoration(
-                                            //             labelText: 'Susbcription Name',
-                                            //             labelStyle: TextStyle(
-                                            //               color: Colors.white,
-                                            //             ),
-                                            //             filled: true,
-                                            //             fillColor: Colors.white.withOpacity(0.2),
-                                            //             isDense: true,
-                                            //             enabledBorder: OutlineInputBorder(borderSide: const BorderSide(color: Colors.white),
-                                            //                 borderRadius: BorderRadius.circular(25)),
-                                            //             prefixIcon: Icon(Icons.collections_bookmark_rounded, color: Colors.white)),
-                                            //         onSaved: (input) => _subscriptionTitle = input,
-                                            //       ),
-                                            // ),
-                                            ListTile(
-                                              title: Text(
-                                                'Payment Frequency',
-                                                style: TextStyle(
+                                            TextFormField(
+                                              controller: myController1,
+                                              validator: (String value) {
+                                                if (value.isEmpty) {
+                                                  return 'Enter Subscription Cost';
+                                                }
+                                                return null;
+                                              },
+                                              decoration: InputDecoration(
+                                                  labelText:
+                                                      'Susbcription Name',
+                                                  labelStyle: TextStyle(
                                                     color: Colors.white,
-                                                    fontSize: 18),
-                                              ),
-                                              trailing: Icon(
-                                                Icons.arrow_forward_ios,
-                                                color: Colors.white,
-                                              ),
+                                                  ),
+                                                  filled: true,
+                                                  isDense: true,
+                                                  prefixIcon: Icon(
+                                                      Icons.class__rounded,
+                                                      color: Colors.white)),
                                             ),
-                                            ListTile(
-                                              title: Text(
-                                                'Subscription Cost',
-                                                style: TextStyle(
+                                            SizedBox(height: 10),
+                                            TextFormField(
+                                              controller: myController2,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              validator: (String value) {
+                                                if (value.isEmpty) {
+                                                  return 'Enter Subscription Cost';
+                                                }
+                                                return null;
+                                              },
+                                              decoration: InputDecoration(
+                                                  labelText:
+                                                      'Subscription Cost',
+                                                  labelStyle: TextStyle(
                                                     color: Colors.white,
-                                                    fontSize: 18),
-                                              ),
-                                              trailing: Icon(
-                                                  Icons.arrow_forward_ios,
-                                                  color: Colors.white),
+                                                  ),
+                                                  filled: true,
+                                                  isDense: true,
+                                                  prefixIcon: Icon(
+                                                      Icons.local_atm_outlined,
+                                                      color: Colors.white)),
                                             ),
+                                            SizedBox(height: 10),
                                             Container(
                                               child:
                                                   FloatingActionButton.extended(
                                                 onPressed: () {
-                                                  // onSaveAlarm(_subscriptionTitle,
-                                                  //     _isRepeatSelected);
+                                                  _subscriptionTitle =
+                                                      myController1.text;
+                                                  _planCost =
+                                                      myController2.text;
                                                   onSaveAlarm(
+                                                      _subscriptionTitle,
+                                                      _planCost,
                                                       _isRepeatSelected);
                                                 },
                                                 icon: Icon(Icons.alarm),
@@ -370,7 +391,7 @@ class _AlarmPageState extends State<AlarmPage> {
     if (isRepeating)
       await flutterLocalNotificationsPlugin.showDailyAtTime(
           0,
-          'Office',
+          'Subscription Reminder: ',
           alarmInfo.title,
           Time(
               scheduledNotificationDateTime.hour,
@@ -380,28 +401,41 @@ class _AlarmPageState extends State<AlarmPage> {
     else
       await flutterLocalNotificationsPlugin.schedule(
           0,
-          'Office',
+          'Subscription Reminder: ',
           alarmInfo.title,
           scheduledNotificationDateTime,
           platformChannelSpecifics);
   }
 
   //void onSaveAlarm(String _subscriptionTitle, bool _isRepeating) {
-  void onSaveAlarm(bool _isRepeating) {
+  void onSaveAlarm(
+      String _subscriptionTitle, String _planCost, bool _isRepeating) {
+    String pTitle = _subscriptionTitle;
+    String cost = _planCost;
+
     int max = 5;
     int randomNumber = Random().nextInt(max);
     DateTime scheduleAlarmDateTime;
     if (_alarmTime.isAfter(DateTime.now()))
       scheduleAlarmDateTime = _alarmTime;
     else
-      scheduleAlarmDateTime = _alarmTime.add(Duration(days: 30));
-
+      scheduleAlarmDateTime = _alarmTime.add(Duration(days: 1));
+    //scheduleAlarmDateTime = _alarmTime.add(Duration(days: 30));
     var alarmInfo = AlarmInfo(
       alarmDateTime: scheduleAlarmDateTime,
       gradientColorIndex: randomNumber,
       title: 'Subscription',
+      planTitle: '$pTitle',
+      planCost: '$cost',
     );
+
+    print(
+        "==================================================================================================================================================================");
+    print(alarmInfo.planTitle);
+    print(alarmInfo.planCost);
     _alarmHelper.insertAlarm(alarmInfo);
+    print(
+        "==================================================================================================================================================================");
     scheduleAlarm(scheduleAlarmDateTime, alarmInfo, isRepeating: _isRepeating);
     Navigator.pop(context);
     loadAlarms();
