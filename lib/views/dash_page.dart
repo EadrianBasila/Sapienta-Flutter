@@ -100,16 +100,19 @@ class _DashPageState extends State<DashPage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Text('69', style: TextStyle(
+                          Text('6', style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: CustomColors.primaryTextColor,
                               fontSize: 36),
                               ),
-                          Text('Active Plans', style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              color: CustomColors.primaryTextColor,
-                              fontSize: 12),
-                              ),                     
+                          Align(
+                            alignment: FractionalOffset.bottomCenter,
+                            child: Text('Active Plans', style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                color: CustomColors.primaryTextColor,
+                                fontSize: 12),
+                                ),
+                          ),                     
                         ],
                       ),
                     ),                  
@@ -141,13 +144,16 @@ class _DashPageState extends State<DashPage> {
                           Text('$_userSalary', style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: CustomColors.primaryTextColor,
-                              fontSize: 24),
+                              fontSize: 27),
                               ),
-                          Text('Remaining Salary', style: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              color: CustomColors.primaryTextColor,
-                              fontSize: 10),
-                              ),                     
+                          Align(
+                            alignment: FractionalOffset.bottomCenter,
+                            child: Text('Remaining Salary', style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                color: CustomColors.primaryTextColor,
+                                fontSize: 12),
+                                ),
+                          ),                     
                         ],
                       ),
                     ),
@@ -196,7 +202,140 @@ class _DashPageState extends State<DashPage> {
                   ),
                 ],
             )
-          )
+          ),
+          SizedBox(height: 10,), 
+          IntrinsicHeight(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[                                  
+                  
+                  Expanded(
+                    flex: 2,
+                    child: Container( 
+                      padding: const EdgeInsets.symmetric(
+                      horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(                 
+                        gradient: LinearGradient(
+                          colors: GradientColors.sea,
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: GradientColors.sea.last.withOpacity(0.4),
+                            blurRadius: 8,
+                            spreadRadius: 2,
+                            offset: Offset(1, 1),
+                          ),
+                        ],
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text('$_userSalary', style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: CustomColors.primaryTextColor,
+                              fontSize: 27),
+                              ),
+                          Align(
+                            alignment: FractionalOffset.bottomCenter,
+                            child: Text('Remaining Salary', style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                color: CustomColors.primaryTextColor,
+                                fontSize: 12),
+                                ),
+                          ),                     
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10,),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                      horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: GradientColors.mango,
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: GradientColors.mango.last.withOpacity(0.4),
+                            blurRadius: 8,
+                            spreadRadius: 2,
+                            offset: Offset(1, 1),
+                          ),
+                        ],
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text('6', style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: CustomColors.primaryTextColor,
+                              fontSize: 36),
+                              ),
+                          Align(
+                            alignment: FractionalOffset.bottomCenter,
+                            child: Text('Active Plans', style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                color: CustomColors.primaryTextColor,
+                                fontSize: 12),
+                                ),
+                          ),                     
+                        ],
+                      ),
+                    ),  
+                ],
+              ),
+            ),
+            SizedBox(height: 10,),
+            IntrinsicHeight(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Expanded(
+                    flex: 2,
+                    child: Container( 
+                      padding: const EdgeInsets.symmetric(
+                      horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(                 
+                        gradient: LinearGradient(
+                          colors: GradientColors.sunset,
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: GradientColors.sunset.last.withOpacity(0.4),
+                            blurRadius: 8,
+                            spreadRadius: 2,
+                            offset: Offset(1, 1),
+                          ),
+                        ],
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: CategoriesRow(),
+                    ),
+                  ), 
+                  SizedBox(width: 10,),
+                  Container(
+                    height: 150,
+                    width: 150,
+                      child:Expanded(child: Column(
+                    children: <Widget>[
+                      PieChartView(),
+                    ],),)
+                  ),
+                 
+                ],
+            )
+          ),
         ]
       ),
     );
