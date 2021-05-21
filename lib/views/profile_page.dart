@@ -31,9 +31,10 @@ class _ProfilePageState extends State<ProfilePage> {
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: CustomColors.menuBackgroundColor.withOpacity(0.9),
+                  color: CustomColors.menuBackgroundColor,
                   blurRadius: 8,
                   spreadRadius: 2,
+                  offset: Offset(1,1)
                 ),
               ],
             ),
@@ -183,8 +184,8 @@ class _ProfilePageState extends State<ProfilePage> {
           BoxShadow(
             color: CustomColors.menuBackgroundColor.withOpacity(0.9),
             blurRadius: 8,
-            spreadRadius: 1,
-            offset: Offset(4, 4),
+            spreadRadius: 2,
+            offset: Offset(1,1),
           ),
         ],
         borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -233,8 +234,8 @@ class _ProfilePageState extends State<ProfilePage> {
           BoxShadow(
             color: CustomColors.menuBackgroundColor.withOpacity(0.9),
             blurRadius: 8,
-            spreadRadius: 1,
-            offset: Offset(4, 4),
+            spreadRadius: 2,
+            offset: Offset(1,1),
           ),
         ],
         borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -281,8 +282,8 @@ class _ProfilePageState extends State<ProfilePage> {
           BoxShadow(
             color: CustomColors.menuBackgroundColor.withOpacity(0.9),
             blurRadius: 8,
-            spreadRadius: 1,
-            offset: Offset(4, 4),
+            spreadRadius: 2,
+            offset: Offset(1,1),
           ),
         ],
         borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -329,8 +330,8 @@ class _ProfilePageState extends State<ProfilePage> {
           BoxShadow(
             color: CustomColors.menuBackgroundColor.withOpacity(0.9),
             blurRadius: 8,
-            spreadRadius: 1,
-            offset: Offset(4, 4),
+            spreadRadius: 2,
+            offset: Offset(1,1,)
           ),
         ],
         borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -377,8 +378,8 @@ class _ProfilePageState extends State<ProfilePage> {
           BoxShadow(
             color: CustomColors.menuBackgroundColor.withOpacity(0.9),
             blurRadius: 8,
-            spreadRadius: 1,
-            offset: Offset(4, 4),
+            spreadRadius: 2,
+            offset: Offset(1,1),
           ),
         ],
         borderRadius: BorderRadius.all(Radius.circular(30)),
@@ -419,7 +420,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return ListView(
-        padding: EdgeInsets.symmetric(horizontal: 32, vertical: 64),
+        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 42),
         children: <Widget>[
           Expanded(
             child: Form(
@@ -460,7 +461,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       )
                     ],
                   ),
-                  SizedBox(height: 10.0),
+                  SizedBox(height: 20.0),
                   _buildUsername(),
                   _buildAge(),
                   _buildAddress(),
@@ -489,13 +490,13 @@ class _ProfilePageState extends State<ProfilePage> {
                         style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 15),
-                            primary: Colors.orange[700],
+                            primary: Colors.deepPurple[900],
                             onPrimary: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0),
                             )),
                       ),
-                      SizedBox(width: 20),
+                      SizedBox(width: 10),
                       Text(
                         'On-Premise DB',
                         style: TextStyle(

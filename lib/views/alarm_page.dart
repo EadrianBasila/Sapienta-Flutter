@@ -53,7 +53,7 @@ class _AlarmPageState extends State<AlarmPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 32, vertical: 64),
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 64),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -80,7 +80,7 @@ class _AlarmPageState extends State<AlarmPage> {
                       var gradientColor = GradientTemplate
                           .gradientTemplate[alarm.gradientColorIndex].colors;
                       return Container(
-                        margin: const EdgeInsets.only(bottom: 32),
+                        margin: const EdgeInsets.only(bottom: 16),
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 8),
                         decoration: BoxDecoration(
@@ -116,7 +116,7 @@ class _AlarmPageState extends State<AlarmPage> {
                                     Text(
                                       alarm.title,
                                       style: TextStyle(
-                                        color: Colors.white,
+                                        color: Colors.white, fontSize: 18
                                       ),
                                     )
                                   ],
@@ -134,7 +134,7 @@ class _AlarmPageState extends State<AlarmPage> {
                                   planTitle,
                                   style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 14,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 SizedBox(
@@ -143,7 +143,7 @@ class _AlarmPageState extends State<AlarmPage> {
                                 Text(
                                   'Cost: $planCost',
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 14),
+                                      color: Colors.white, fontSize: 18),
                                 ),
                               ],
                             ),
@@ -154,7 +154,7 @@ class _AlarmPageState extends State<AlarmPage> {
                                   alarmTime,
                                   style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 12,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.w700),
                                 ),
                                 IconButton(
@@ -173,7 +173,14 @@ class _AlarmPageState extends State<AlarmPage> {
                         Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
-                            color: CustomColors.clockBG,
+                            boxShadow: [
+                              BoxShadow(
+                                color: CustomColors.menuBackgroundColor.withOpacity(0.9),
+                                blurRadius: 8,
+                                spreadRadius: 4,
+                              ),
+                            ],
+                            color: CustomColors.menuBackgroundColor,
                             borderRadius: BorderRadius.all(Radius.circular(25)),
                           ),
                           child: TextButton(
