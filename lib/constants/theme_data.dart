@@ -24,6 +24,11 @@ class GradientColors {
   static List<Color> sea = [Color(0xFF61A3FE), Color(0xFF63FFD5)];
   static List<Color> mango = [Color(0xFFFFA738), Color(0xFFFFE130)];
   static List<Color> fire = [Color(0xFFFF5DCD), Color(0xFFFF8484)];
+  static List<Color> retro = [Color(0xFFFDBB2D), Color(0xFF22C1C3)];
+  static List<Color> fresco = [Color(0xFFFDBB2D), Color(0xFF3A1C71)];
+  static List<Color> ooey = [Color(0xFF0700b8), Color(0xFF00ff88)];
+  static List<Color> moss = [Color(0xFF9ebd13), Color(0xFF008552)];
+  static List<Color> cucumber = [Color(0xFFe3ffe7), Color(0xFFd9e7ff)];
 }
 
 class GradientTemplate {
@@ -33,5 +38,10 @@ class GradientTemplate {
     GradientColors(GradientColors.sea),
     GradientColors(GradientColors.mango),
     GradientColors(GradientColors.fire),
+    GradientColors(GradientColors.retro),
+    GradientColors(GradientColors.fresco),
+    GradientColors(GradientColors.ooey),
+    GradientColors(GradientColors.moss),
+    GradientColors(GradientColors.cucumber),
   ];
 }

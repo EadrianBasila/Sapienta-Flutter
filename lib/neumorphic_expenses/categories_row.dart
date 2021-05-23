@@ -47,7 +47,7 @@ class ExpenseCategory extends StatelessWidget {
             ),
           ),
           SizedBox(width: 5),
-          Text(text, style: TextStyle(fontSize: 12, color: Colors.white, fontWeight: FontWeight.bold),)
+          Text(text, style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.bold),)
         ],
       ),
     );

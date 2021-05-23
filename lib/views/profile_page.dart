@@ -9,17 +9,30 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  String _image;
-  String _userName;
-  String _userAge;
-  String _userAddress;
-  String _userNumber;
-  String _userPosition;
-  String _userSalary;
   PickedFile _imageFile;
   final ImagePicker _picker = ImagePicker();
+  static final TextEditingController textName = TextEditingController();
+  final TextEditingController textAge = TextEditingController();
+  final TextEditingController textAddress = TextEditingController();
+  final TextEditingController textNumber = TextEditingController();
+  final TextEditingController textPosition = TextEditingController();
+  final TextEditingController textSalary = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  // @override
+  // void dispose() {
+  //   // Clean up the controller when the widget is removed from the
+  //   // widget tree.
+  //   textName.dispose();
+  //   textAge.dispose();
+  //   textAddress.dispose();
+  //   textNumber.dispose();
+  //   textNumber.dispose();
+  //   textPosition.dispose();
+  //   textSalary.dispose();
+  //   super.dispose();
+  // }
 
   Widget _buildImage() {
     return Center(
@@ -31,11 +44,10 @@ class _ProfilePageState extends State<ProfilePage> {
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
-                  color: CustomColors.menuBackgroundColor,
-                  blurRadius: 8,
-                  spreadRadius: 2,
-                  offset: Offset(1,1)
-                ),
+                    color: CustomColors.menuBackgroundColor,
+                    blurRadius: 8,
+                    spreadRadius: 2,
+                    offset: Offset(1, 1)),
               ],
             ),
             child: CircleAvatar(
@@ -141,6 +153,7 @@ class _ProfilePageState extends State<ProfilePage> {
         borderRadius: BorderRadius.all(Radius.circular(30)),
       ),
       child: TextFormField(
+        controller: textName,
         style: TextStyle(color: Colors.white, fontSize: 24),
         cursorColor: Colors.white,
         validator: (String value) {
@@ -167,9 +180,6 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Colors.white,
               size: 24,
             )),
-        onSaved: (String value) {
-          _userName = value;
-        },
       ),
     );
   }
@@ -185,12 +195,13 @@ class _ProfilePageState extends State<ProfilePage> {
             color: CustomColors.menuBackgroundColor.withOpacity(0.9),
             blurRadius: 8,
             spreadRadius: 2,
-            offset: Offset(1,1),
+            offset: Offset(1, 1),
           ),
         ],
         borderRadius: BorderRadius.all(Radius.circular(30)),
       ),
       child: TextFormField(
+        controller: textAge,
         style: TextStyle(color: Colors.white, fontSize: 24),
         cursorColor: Colors.white,
         validator: (String value) {
@@ -217,9 +228,6 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Colors.white,
               size: 24,
             )),
-        onSaved: (String value) {
-          _userAge = value;
-        },
       ),
     );
   }
@@ -235,12 +243,14 @@ class _ProfilePageState extends State<ProfilePage> {
             color: CustomColors.menuBackgroundColor.withOpacity(0.9),
             blurRadius: 8,
             spreadRadius: 2,
-            offset: Offset(1,1),
+            offset: Offset(1, 1),
           ),
         ],
         borderRadius: BorderRadius.all(Radius.circular(30)),
       ),
       child: TextFormField(
+        controller: textAddress,
+        style: TextStyle(color: Colors.white, fontSize: 24),
         validator: (String value) {
           if (value.isEmpty) {
             return 'Enter Home Address';
@@ -265,9 +275,6 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Colors.white,
               size: 24,
             )),
-        onSaved: (String value) {
-          _userAddress = value;
-        },
       ),
     );
   }
@@ -283,12 +290,14 @@ class _ProfilePageState extends State<ProfilePage> {
             color: CustomColors.menuBackgroundColor.withOpacity(0.9),
             blurRadius: 8,
             spreadRadius: 2,
-            offset: Offset(1,1),
+            offset: Offset(1, 1),
           ),
         ],
         borderRadius: BorderRadius.all(Radius.circular(30)),
       ),
       child: TextFormField(
+        controller: textNumber,
+         style: TextStyle(color: Colors.white, fontSize: 24),
         validator: (String value) {
           if (value.isEmpty) {
             return 'Enter a valid Phone Number';
@@ -313,9 +322,6 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Colors.white,
               size: 24,
             )),
-        onSaved: (String value) {
-          _userNumber = value;
-        },
       ),
     );
   }
@@ -328,15 +334,19 @@ class _ProfilePageState extends State<ProfilePage> {
         color: CustomColors.menuBackgroundColor,
         boxShadow: [
           BoxShadow(
-            color: CustomColors.menuBackgroundColor.withOpacity(0.9),
-            blurRadius: 8,
-            spreadRadius: 2,
-            offset: Offset(1,1,)
-          ),
+              color: CustomColors.menuBackgroundColor.withOpacity(0.9),
+              blurRadius: 8,
+              spreadRadius: 2,
+              offset: Offset(
+                1,
+                1,
+              )),
         ],
         borderRadius: BorderRadius.all(Radius.circular(30)),
       ),
       child: TextFormField(
+        controller: textPosition,
+        style: TextStyle(color: Colors.white, fontSize: 24),
         validator: (String value) {
           if (value.isEmpty) {
             return 'Enter Position';
@@ -361,9 +371,6 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Colors.white,
               size: 24,
             )),
-        onSaved: (String value) {
-          _userPosition = value;
-        },
       ),
     );
   }
@@ -379,12 +386,14 @@ class _ProfilePageState extends State<ProfilePage> {
             color: CustomColors.menuBackgroundColor.withOpacity(0.9),
             blurRadius: 8,
             spreadRadius: 2,
-            offset: Offset(1,1),
+            offset: Offset(1, 1),
           ),
         ],
         borderRadius: BorderRadius.all(Radius.circular(30)),
       ),
       child: TextFormField(
+        controller: textSalary,
+        style: TextStyle(color: Colors.white, fontSize: 24),
         keyboardType: TextInputType.number,
         validator: (String value) {
           if (value.isEmpty) {
@@ -410,9 +419,6 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Colors.white,
               size: 24,
             )),
-        onSaved: (String value) {
-          _userSalary = value;
-        },
       ),
     );
   }
@@ -437,21 +443,21 @@ class _ProfilePageState extends State<ProfilePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            'User Name',
+                            ProfileInfo.userName,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: CustomColors.primaryTextColor,
                                 fontSize: 22),
                           ),
                           Text(
-                            'Position',
+                            ProfileInfo.userPosition,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: CustomColors.primaryTextColor,
                                 fontSize: 16),
                           ),
                           Text(
-                            'Salary Grade',
+                            ProfileInfo.userSalary,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: CustomColors.primaryTextColor,
@@ -478,6 +484,14 @@ class _ProfilePageState extends State<ProfilePage> {
                             return;
                           }
                           _formKey.currentState.save();
+
+                          String userName = textName.text;
+                          String userAge = textAge.text;
+                          String userAddress = textAddress.text;
+                          String userNumber = textNumber.text;
+                          String userPosition = textPosition.text;
+                          String userSalary = textSalary.text;
+                          ProfileInfo.createProfile(userName, userAge, userAddress, userNumber, userPosition, userSalary);
                           print("Profile Saved");
                         },
                         child: Text(
@@ -513,4 +527,32 @@ class _ProfilePageState extends State<ProfilePage> {
           )
         ]);
   }
+}
+
+class ProfileInfo {
+  static String userName = "Hatdog";
+  static String userAge = "20";
+  static String userAddress = "Home Address";
+  static String userNumber = "09123456789";
+  static String userPosition = "Tambay";
+  static String userSalary = "69000";
+
+  ProfileInfo.createProfile(String userName, String userAge, String userAddress,
+      String userNumber, String userPosition, String userSalary) {
+    ProfileInfo.userName = userName;
+    ProfileInfo.userAge = userAge;
+    ProfileInfo.userAddress = userAddress;
+    ProfileInfo.userNumber = userNumber;
+    ProfileInfo.userPosition = userPosition;
+    ProfileInfo.userSalary = userSalary;
+  }
+
+  // ProfileInfo(
+  //    this.userName,
+  //    this.userAge,
+  //    this.userAddress,
+  //    this.userNumber,
+  //    this.userPosition,
+  //    this.userSalary,
+  //  );
 }

@@ -29,7 +29,7 @@ class PieChartView extends StatelessWidget {
           BoxShadow(
             spreadRadius: -2,
             blurRadius: 10,
-            offset: Offset(7,7),
+            offset: Offset(2,2),
             color: GradientColors.sky.first.withOpacity(0.4),
           ),
           ],
