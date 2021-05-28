@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:clock_app/constants/theme_data.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -19,7 +21,9 @@ class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController textSalary = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  SharedPref sharedPref = SharedPref();
+  ProfileInfo userSave = ProfileInfo();
+  ProfileInfo userLoad = ProfileInfo();
   // @override
   // void dispose() {
   //   // Clean up the controller when the widget is removed from the
@@ -33,6 +37,29 @@ class _ProfilePageState extends State<ProfilePage> {
   //   textSalary.dispose();
   //   super.dispose();
   // }
+
+  void initState() {
+    loadSharedPrefs();
+    super.initState();
+  }
+
+  loadSharedPrefs() async {
+    try {
+      ProfileInfo user = ProfileInfo.fromJson(await sharedPref.read("user"));
+      // ignore: deprecated_member_use
+      Scaffold.of(context).showSnackBar(SnackBar(
+          content: new Text("Loaded!"),
+          duration: const Duration(milliseconds: 500)));
+      setState(() {
+        userLoad = user;
+      });
+    } catch (Excepetion) {
+      // ignore: deprecated_member_use
+      Scaffold.of(context).showSnackBar(SnackBar(
+          content: new Text("Nothing found!"),
+          duration: const Duration(milliseconds: 500)));
+    }
+  }
 
   Widget _buildImage() {
     return Center(
@@ -180,6 +207,11 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Colors.white,
               size: 24,
             )),
+            /////using shared preferences
+            onChanged: (value) {
+                      setState(() {
+                        userSave.userName = value;
+                      });}
       ),
     );
   }
@@ -228,6 +260,11 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Colors.white,
               size: 24,
             )),
+             /////using shared preferences
+            onChanged: (value) {
+                      setState(() {
+                        userSave.userAge = value;
+                      });}
       ),
     );
   }
@@ -275,6 +312,11 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Colors.white,
               size: 24,
             )),
+             /////using shared preferences
+            onChanged: (value) {
+                      setState(() {
+                        userSave.userAddress = value;
+                      });}
       ),
     );
   }
@@ -297,7 +339,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       child: TextFormField(
         controller: textNumber,
-         style: TextStyle(color: Colors.white, fontSize: 24),
+        style: TextStyle(color: Colors.white, fontSize: 24),
         validator: (String value) {
           if (value.isEmpty) {
             return 'Enter a valid Phone Number';
@@ -322,6 +364,11 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Colors.white,
               size: 24,
             )),
+             /////using shared preferences
+            onChanged: (value) {
+                      setState(() {
+                        userSave.userNumber = value;
+                      });}
       ),
     );
   }
@@ -346,6 +393,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       child: TextFormField(
         controller: textPosition,
+
         style: TextStyle(color: Colors.white, fontSize: 24),
         validator: (String value) {
           if (value.isEmpty) {
@@ -371,6 +419,11 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Colors.white,
               size: 24,
             )),
+             /////using shared preferences
+            onChanged: (value) {
+                      setState(() {
+                        userSave.userPosition = value;
+                      });}
       ),
     );
   }
@@ -419,6 +472,11 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Colors.white,
               size: 24,
             )),
+             /////using shared preferences
+            onChanged: (value) {
+                      setState(() {
+                        userSave.userSalary = value;
+                      });}
       ),
     );
   }
@@ -443,21 +501,21 @@ class _ProfilePageState extends State<ProfilePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            ProfileInfo.userName,
+                            userLoad.userName ?? "User",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: CustomColors.primaryTextColor,
                                 fontSize: 22),
                           ),
                           Text(
-                            ProfileInfo.userPosition,
+                            userLoad.userPosition ?? "Position",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: CustomColors.primaryTextColor,
                                 fontSize: 16),
                           ),
                           Text(
-                            ProfileInfo.userSalary,
+                            userLoad.userSalary ?? "150",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: CustomColors.primaryTextColor,
@@ -485,14 +543,24 @@ class _ProfilePageState extends State<ProfilePage> {
                           }
                           _formKey.currentState.save();
 
-                          String userName = textName.text;
-                          String userAge = textAge.text;
-                          String userAddress = textAddress.text;
-                          String userNumber = textNumber.text;
-                          String userPosition = textPosition.text;
-                          String userSalary = textSalary.text;
-                          ProfileInfo.createProfile(userName, userAge, userAddress, userNumber, userPosition, userSalary);
+                          // Working Static Variables
+                          // String userName = textName.text;
+                          // String userAge = textAge.text;
+                          // String userAddress = textAddress.text;
+                          // String userNumber = textNumber.text;
+                          // String userPosition = textPosition.text;
+                          // String userSalary = textSalary.text;
+                          // ProfileInfo.createProfile(
+                          //     userName,
+                          //     userAge,
+                          //     userAddress,
+                          //     userNumber,
+                          //     userPosition,
+                          //     userSalary);
+
+                          sharedPref.save("user", userSave);
                           print("Profile Saved");
+                          loadSharedPrefs();
                         },
                         child: Text(
                           'Save Profile',
@@ -529,30 +597,93 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
+// class ProfileInfo {
+//   static String userName = "Hatdog";
+//   static String userAge = "20";
+//   static String userAddress = "Home Address";
+//   static String userNumber = "09123456789";
+//   static String userPosition = "Tambay";
+//   static String userSalary = "0";
+
+//   ProfileInfo.createProfile(String userName, String userAge, String userAddress,
+//       String userNumber, String userPosition, String userSalary) {
+//     ProfileInfo.userName = userName;
+//     ProfileInfo.userAge = userAge;
+//     ProfileInfo.userAddress = userAddress;
+//     ProfileInfo.userNumber = userNumber;
+//     ProfileInfo.userPosition = userPosition;
+//     ProfileInfo.userSalary = userSalary;
+//   }
+// Working Profile Classs
+// }
+
 class ProfileInfo {
-  static String userName = "Hatdog";
-  static String userAge = "20";
-  static String userAddress = "Home Address";
-  static String userNumber = "09123456789";
-  static String userPosition = "Tambay";
-  static String userSalary = "69000";
+  // static String userName = "User Name";
+  // static String userAge = "Age";
+  // static String userAddress = "Home Address";
+  // static String userNumber = "09-XXXXX";
+  // static String userPosition = "Work Position";
+  // static String userSalary = "150";
+
+  //  ProfileInfo.createProfile(String userName, String userAge, String userAddress,
+  //     String userNumber, String userPosition, String userSalary) {
+  //   ProfileInfo.userName = userName;
+  //   ProfileInfo.userAge = userAge;
+  //   ProfileInfo.userAddress = userAddress;
+  //   ProfileInfo.userNumber = userNumber;
+  //   ProfileInfo.userPosition = userPosition;
+  //   ProfileInfo.userSalary = userSalary;
+  // }
+  // ProfileInfo();
+
+  String userName = "User Name";
+  String userAge = "Age";
+  String userAddress = "Home Address";
+  String userNumber = "09-XXXXX";
+  String userPosition = "Work Position";
+  String userSalary = "150";
 
   ProfileInfo.createProfile(String userName, String userAge, String userAddress,
       String userNumber, String userPosition, String userSalary) {
-    ProfileInfo.userName = userName;
-    ProfileInfo.userAge = userAge;
-    ProfileInfo.userAddress = userAddress;
-    ProfileInfo.userNumber = userNumber;
-    ProfileInfo.userPosition = userPosition;
-    ProfileInfo.userSalary = userSalary;
+    userName = userName;
+    userAge = userAge;
+    userAddress = userAddress;
+    userNumber = userNumber;
+    userPosition = userPosition;
+    userSalary = userSalary;
+  }
+  ProfileInfo();
+
+  ProfileInfo.fromJson(Map<String, dynamic> json)
+      : userName = json['userName'],
+        userAge = json['userAge'],
+        userAddress = json['userAddress'],
+        userNumber = json['userNumber'],
+        userPosition = json['userPosition'],
+        userSalary = json['userSalary'];
+  Map<String, dynamic> toJson() => {
+        'userName' : userName,
+        'userAge' : userAge,
+        'userAddress' : userAddress,
+        'userNumber' : userNumber,
+        'userPosition' : userPosition,
+        'userSalary' : userSalary,
+      };
+}
+
+class SharedPref {
+  read(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    return json.decode(prefs.getString(key));
   }
 
-  // ProfileInfo(
-  //    this.userName,
-  //    this.userAge,
-  //    this.userAddress,
-  //    this.userNumber,
-  //    this.userPosition,
-  //    this.userSalary,
-  //  );
+  save(String key, value) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString(key, json.encode(value));
+  }
+
+  remove(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove(key);
+  }
 }

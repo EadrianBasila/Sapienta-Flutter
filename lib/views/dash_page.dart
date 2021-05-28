@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:clock_app/alarm_helper.dart';
 import 'package:clock_app/constants/theme_data.dart';
+import 'package:clock_app/models/alarm_info.dart';
 import 'package:clock_app/neumorphic_expenses/categories_row.dart';
 import 'package:clock_app/neumorphic_expenses/pie_chart_view.dart';
 import 'package:clock_app/views/profile_page.dart';
@@ -14,6 +16,47 @@ class DashPage extends StatefulWidget {
 
 class _DashPageState extends State<DashPage> {
   PickedFile _imageFile;
+  AlarmHelper _alarmHelper = AlarmHelper();
+  SharedPref sharedPref = SharedPref();
+  ProfileInfo userLoad = ProfileInfo();
+
+  /////////////////////////////////
+  Future<List<AlarmInfo>> _alarms;
+  List<AlarmInfo> _currentAlarms;
+
+  @override
+  void initState() {
+    _alarmHelper.initializeDatabase().then((value) {
+      print('------database intialized');
+      loadAlarms();
+      loadSharedPrefs();
+    });
+    super.initState();
+  }
+
+  void loadAlarms() {
+    _alarms = _alarmHelper.getAlarms();
+    if (mounted) setState(() {});
+  }
+  ///////////////////////////////////
+
+  loadSharedPrefs() async {
+    try {
+      ProfileInfo user = ProfileInfo.fromJson(await sharedPref.read("user"));
+      // ignore: deprecated_member_use
+      Scaffold.of(context).showSnackBar(SnackBar(
+          content: new Text("Loaded!"),
+          duration: const Duration(milliseconds: 500)));
+      setState(() {
+        userLoad = user;
+      });
+    } catch (Excepetion) {
+      // ignore: deprecated_member_use
+      Scaffold.of(context).showSnackBar(SnackBar(
+          content: new Text("Nothing found!"),
+          duration: const Duration(milliseconds: 500)));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +64,8 @@ class _DashPageState extends State<DashPage> {
     var formattedDate = DateFormat('EEE, d MMM yyyy').format(now);
     var sg = SalaryGrade();
 
-    String _userName = ProfileInfo.userName;
-    String _userSalary = ProfileInfo.userSalary;
+    String _userName = userLoad.userName ?? "";
+    String _userSalary = userLoad.userSalary ?? "";
     //String _userName = ProfileInfo.userName;
     sg.getGrade = int.parse(_userSalary);
 
@@ -254,7 +297,7 @@ class _DashPageState extends State<DashPage> {
                     children: <Widget>[
                       ///////////////////////// Total plan cost
                       Text(
-                        ProfileInfo.userPosition,
+                        userLoad.userPosition,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: CustomColors.primaryTextColor,
@@ -353,87 +396,91 @@ class _DashPageState extends State<DashPage> {
                   borderRadius: BorderRadius.all(Radius.circular(25)),
                 ),
                 child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 5,
-                      ),
-  
-                      Row(
-                        children: [
-                          Text(
-                            'Netflix',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.primaryTextColor,
-                                fontSize: 16), textAlign: TextAlign.left,
-                          ),
-                          Spacer(),
-                          Text(
-                            'Cost: 500',
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                color: CustomColors.primaryTextColor,
-                                fontSize: 14), textAlign: TextAlign.right,
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            'Spotify',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.primaryTextColor,
-                                fontSize: 16), textAlign: TextAlign.left,
-                          ),
-                          Spacer(),
-                           Text(
-                            'Cost: 150',
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                color: CustomColors.primaryTextColor,
-                                fontSize: 14), textAlign: TextAlign.right,
-                          ),
-                        ],
-                      ),
-                       Row(
-                         children: [
-                           Text(
-                            'Youtube ',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.primaryTextColor,
-                                fontSize: 16), textAlign: TextAlign.left,
-                            ),
-                            Spacer(),
-                            Text(
-                            'Cost: 90',
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                color: CustomColors.primaryTextColor,
-                                fontSize: 14), textAlign: TextAlign.right,
-                          ),
-                         ],
-                       ),
-                      SizedBox(height: 5,),
-                      Text(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          'Netflix',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: CustomColors.primaryTextColor,
+                              fontSize: 16),
+                          textAlign: TextAlign.left,
+                        ),
+                        Spacer(),
+                        Text(
+                          'Cost: 500',
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: CustomColors.primaryTextColor,
+                              fontSize: 14),
+                          textAlign: TextAlign.right,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          'Spotify',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: CustomColors.primaryTextColor,
+                              fontSize: 16),
+                          textAlign: TextAlign.left,
+                        ),
+                        Spacer(),
+                        Text(
+                          'Cost: 150',
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: CustomColors.primaryTextColor,
+                              fontSize: 14),
+                          textAlign: TextAlign.right,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          'Youtube ',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: CustomColors.primaryTextColor,
+                              fontSize: 16),
+                          textAlign: TextAlign.left,
+                        ),
+                        Spacer(),
+                        Text(
+                          'Cost: 90',
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: CustomColors.primaryTextColor,
+                              fontSize: 14),
+                          textAlign: TextAlign.right,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text(
                       'Upcomming subscriptions',
                       style: TextStyle(
                           fontWeight: FontWeight.normal,
                           color: CustomColors.primaryTextColor,
-                          fontSize: 14), textAlign: TextAlign.center,
+                          fontSize: 14),
+                      textAlign: TextAlign.center,
                     ),
-                    ],
-                  ),  
+                  ],
+                ),
               ),
-            ),      
+            ),
           ],
-         )
-        ),
-        
-
-
+        )),
       ]),
     );
   }
