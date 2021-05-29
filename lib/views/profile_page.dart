@@ -12,13 +12,13 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   PickedFile _imageFile;
-  final ImagePicker _picker = ImagePicker();
+  static ImagePicker _picker = ImagePicker();
   static final TextEditingController textName = TextEditingController();
-  final TextEditingController textAge = TextEditingController();
-  final TextEditingController textAddress = TextEditingController();
-  final TextEditingController textNumber = TextEditingController();
-  final TextEditingController textPosition = TextEditingController();
-  final TextEditingController textSalary = TextEditingController();
+  static final TextEditingController textAge = TextEditingController();
+  static final TextEditingController textAddress = TextEditingController();
+  static final TextEditingController textNumber = TextEditingController();
+  static final TextEditingController textPosition = TextEditingController();
+  static final TextEditingController textSalary = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   SharedPref sharedPref = SharedPref();
@@ -37,7 +37,7 @@ class _ProfilePageState extends State<ProfilePage> {
   //   textSalary.dispose();
   //   super.dispose();
   // }
-
+  @override
   void initState() {
     loadSharedPrefs();
     super.initState();
@@ -79,9 +79,9 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             child: CircleAvatar(
               radius: 45.0,
-              backgroundImage: _imageFile == null
+              backgroundImage: userLoad.imagePath == null
                   ? AssetImage('images/profile-default.png')
-                  : FileImage(File(_imageFile.path)),
+                  : FileImage(File(userLoad.imagePath)),
             ),
           ),
           Positioned(
@@ -160,7 +160,9 @@ class _ProfilePageState extends State<ProfilePage> {
     final pickedFile = await _picker.getImage(source: source);
     setState(() {
       _imageFile = pickedFile;
+      userSave.imagePath = _imageFile.path;
     });
+    Navigator.of(context).pop();
   }
 
   Widget _buildUsername() {
@@ -180,39 +182,39 @@ class _ProfilePageState extends State<ProfilePage> {
         borderRadius: BorderRadius.all(Radius.circular(30)),
       ),
       child: TextFormField(
-        controller: textName,
-        style: TextStyle(color: Colors.white, fontSize: 24),
-        cursorColor: Colors.white,
-        validator: (String value) {
-          if (value.isEmpty) {
-            return 'Enter Name';
-          }
-          return null;
-        },
-        decoration: InputDecoration(
-            border: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            enabledBorder: InputBorder.none,
-            errorBorder: InputBorder.none,
-            disabledBorder: InputBorder.none,
-            labelText: 'Name',
-            labelStyle: TextStyle(
-              color: Colors.white,
-              fontSize: 9,
-            ),
-            focusColor: Colors.white,
-            isDense: true,
-            prefixIcon: Icon(
-              Icons.face_unlock_rounded,
-              color: Colors.white,
-              size: 24,
-            )),
-            /////using shared preferences
-            onChanged: (value) {
-                      setState(() {
-                        userSave.userName = value;
-                      });}
-      ),
+          controller: textName,
+          style: TextStyle(color: Colors.white, fontSize: 24),
+          cursorColor: Colors.white,
+          validator: (String value) {
+            if (value.isEmpty) {
+              return 'Enter Name';
+            }
+            return null;
+          },
+          decoration: InputDecoration(
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
+              labelText: 'Name',
+              labelStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 9,
+              ),
+              focusColor: Colors.white,
+              isDense: true,
+              prefixIcon: Icon(
+                Icons.face_unlock_rounded,
+                color: Colors.white,
+                size: 24,
+              )),
+          /////using shared preferences
+          onChanged: (value) {
+            setState(() {
+              userSave.userName = value;
+            });
+          }),
     );
   }
 
@@ -233,39 +235,39 @@ class _ProfilePageState extends State<ProfilePage> {
         borderRadius: BorderRadius.all(Radius.circular(30)),
       ),
       child: TextFormField(
-        controller: textAge,
-        style: TextStyle(color: Colors.white, fontSize: 24),
-        cursorColor: Colors.white,
-        validator: (String value) {
-          if (value.isEmpty) {
-            return 'Enter Age';
-          }
-          return null;
-        },
-        decoration: InputDecoration(
-            border: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            enabledBorder: InputBorder.none,
-            errorBorder: InputBorder.none,
-            disabledBorder: InputBorder.none,
-            labelText: 'Age',
-            labelStyle: TextStyle(
-              color: Colors.white,
-              fontSize: 9,
-            ),
-            focusColor: Colors.white,
-            isDense: true,
-            prefixIcon: Icon(
-              Icons.calendar_today,
-              color: Colors.white,
-              size: 24,
-            )),
-             /////using shared preferences
-            onChanged: (value) {
-                      setState(() {
-                        userSave.userAge = value;
-                      });}
-      ),
+          controller: textAge,
+          style: TextStyle(color: Colors.white, fontSize: 24),
+          cursorColor: Colors.white,
+          validator: (String value) {
+            if (value.isEmpty) {
+              return 'Enter Age';
+            }
+            return null;
+          },
+          decoration: InputDecoration(
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
+              labelText: 'Age',
+              labelStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 9,
+              ),
+              focusColor: Colors.white,
+              isDense: true,
+              prefixIcon: Icon(
+                Icons.calendar_today,
+                color: Colors.white,
+                size: 24,
+              )),
+          /////using shared preferences
+          onChanged: (value) {
+            setState(() {
+              userSave.userAge = value;
+            });
+          }),
     );
   }
 
@@ -286,38 +288,38 @@ class _ProfilePageState extends State<ProfilePage> {
         borderRadius: BorderRadius.all(Radius.circular(30)),
       ),
       child: TextFormField(
-        controller: textAddress,
-        style: TextStyle(color: Colors.white, fontSize: 24),
-        validator: (String value) {
-          if (value.isEmpty) {
-            return 'Enter Home Address';
-          }
-          return null;
-        },
-        decoration: InputDecoration(
-            border: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            enabledBorder: InputBorder.none,
-            errorBorder: InputBorder.none,
-            disabledBorder: InputBorder.none,
-            labelText: 'Home',
-            labelStyle: TextStyle(
-              color: Colors.white,
-              fontSize: 9,
-            ),
-            focusColor: Colors.white,
-            isDense: true,
-            prefixIcon: Icon(
-              Icons.home_rounded,
-              color: Colors.white,
-              size: 24,
-            )),
-             /////using shared preferences
-            onChanged: (value) {
-                      setState(() {
-                        userSave.userAddress = value;
-                      });}
-      ),
+          controller: textAddress,
+          style: TextStyle(color: Colors.white, fontSize: 24),
+          validator: (String value) {
+            if (value.isEmpty) {
+              return userLoad.userAddress ?? 'Enter Home Address';
+            }
+            return null;
+          },
+          decoration: InputDecoration(
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
+              labelText: 'Home',
+              labelStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 9,
+              ),
+              focusColor: Colors.white,
+              isDense: true,
+              prefixIcon: Icon(
+                Icons.home_rounded,
+                color: Colors.white,
+                size: 24,
+              )),
+          /////using shared preferences
+          onChanged: (value) {
+            setState(() {
+              userSave.userAddress = value;
+            });
+          }),
     );
   }
 
@@ -338,38 +340,38 @@ class _ProfilePageState extends State<ProfilePage> {
         borderRadius: BorderRadius.all(Radius.circular(30)),
       ),
       child: TextFormField(
-        controller: textNumber,
-        style: TextStyle(color: Colors.white, fontSize: 24),
-        validator: (String value) {
-          if (value.isEmpty) {
-            return 'Enter a valid Phone Number';
-          }
-          return null;
-        },
-        decoration: InputDecoration(
-            border: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            enabledBorder: InputBorder.none,
-            errorBorder: InputBorder.none,
-            disabledBorder: InputBorder.none,
-            labelText: 'Phone',
-            labelStyle: TextStyle(
-              color: Colors.white,
-              fontSize: 9,
-            ),
-            focusColor: Colors.white,
-            isDense: true,
-            prefixIcon: Icon(
-              Icons.phone,
-              color: Colors.white,
-              size: 24,
-            )),
-             /////using shared preferences
-            onChanged: (value) {
-                      setState(() {
-                        userSave.userNumber = value;
-                      });}
-      ),
+          controller: textNumber,
+          style: TextStyle(color: Colors.white, fontSize: 24),
+          validator: (String value) {
+            if (value.isEmpty) {
+              return 'Enter a valid Phone Number';
+            }
+            return null;
+          },
+          decoration: InputDecoration(
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
+              labelText: 'Phone',
+              labelStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 9,
+              ),
+              focusColor: Colors.white,
+              isDense: true,
+              prefixIcon: Icon(
+                Icons.phone,
+                color: Colors.white,
+                size: 24,
+              )),
+          /////using shared preferences
+          onChanged: (value) {
+            setState(() {
+              userSave.userNumber = value;
+            });
+          }),
     );
   }
 
@@ -392,39 +394,38 @@ class _ProfilePageState extends State<ProfilePage> {
         borderRadius: BorderRadius.all(Radius.circular(30)),
       ),
       child: TextFormField(
-        controller: textPosition,
-
-        style: TextStyle(color: Colors.white, fontSize: 24),
-        validator: (String value) {
-          if (value.isEmpty) {
-            return 'Enter Position';
-          }
-          return null;
-        },
-        decoration: InputDecoration(
-            border: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            enabledBorder: InputBorder.none,
-            errorBorder: InputBorder.none,
-            disabledBorder: InputBorder.none,
-            labelText: 'Position',
-            labelStyle: TextStyle(
-              color: Colors.white,
-              fontSize: 9,
-            ),
-            focusColor: Colors.white,
-            isDense: true,
-            prefixIcon: Icon(
-              Icons.badge,
-              color: Colors.white,
-              size: 24,
-            )),
-             /////using shared preferences
-            onChanged: (value) {
-                      setState(() {
-                        userSave.userPosition = value;
-                      });}
-      ),
+          controller: textPosition,
+          style: TextStyle(color: Colors.white, fontSize: 24),
+          validator: (String value) {
+            if (value.isEmpty) {
+              return 'Enter Position';
+            }
+            return null;
+          },
+          decoration: InputDecoration(
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
+              labelText: 'Position',
+              labelStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 9,
+              ),
+              focusColor: Colors.white,
+              isDense: true,
+              prefixIcon: Icon(
+                Icons.badge,
+                color: Colors.white,
+                size: 24,
+              )),
+          /////using shared preferences
+          onChanged: (value) {
+            setState(() {
+              userSave.userPosition = value;
+            });
+          }),
     );
   }
 
@@ -445,39 +446,39 @@ class _ProfilePageState extends State<ProfilePage> {
         borderRadius: BorderRadius.all(Radius.circular(30)),
       ),
       child: TextFormField(
-        controller: textSalary,
-        style: TextStyle(color: Colors.white, fontSize: 24),
-        keyboardType: TextInputType.number,
-        validator: (String value) {
-          if (value.isEmpty) {
-            return 'Enter your salary';
-          }
-          return null;
-        },
-        decoration: InputDecoration(
-            border: InputBorder.none,
-            focusedBorder: InputBorder.none,
-            enabledBorder: InputBorder.none,
-            errorBorder: InputBorder.none,
-            disabledBorder: InputBorder.none,
-            labelText: 'Salary',
-            labelStyle: TextStyle(
-              color: Colors.white,
-              fontSize: 9,
-            ),
-            focusColor: Colors.white,
-            isDense: true,
-            prefixIcon: Icon(
-              Icons.attach_money_rounded,
-              color: Colors.white,
-              size: 24,
-            )),
-             /////using shared preferences
-            onChanged: (value) {
-                      setState(() {
-                        userSave.userSalary = value;
-                      });}
-      ),
+          controller: textSalary,
+          style: TextStyle(color: Colors.white, fontSize: 24),
+          keyboardType: TextInputType.number,
+          validator: (String value) {
+            if (value.isEmpty) {
+              return 'Enter your salary';
+            }
+            return null;
+          },
+          decoration: InputDecoration(
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
+              labelText: 'Salary',
+              labelStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 9,
+              ),
+              focusColor: Colors.white,
+              isDense: true,
+              prefixIcon: Icon(
+                Icons.attach_money_rounded,
+                color: Colors.white,
+                size: 24,
+              )),
+          /////using shared preferences
+          onChanged: (value) {
+            setState(() {
+              userSave.userSalary = value;
+            });
+          }),
     );
   }
 
@@ -543,21 +544,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           }
                           _formKey.currentState.save();
 
-                          // Working Static Variables
-                          // String userName = textName.text;
-                          // String userAge = textAge.text;
-                          // String userAddress = textAddress.text;
-                          // String userNumber = textNumber.text;
-                          // String userPosition = textPosition.text;
-                          // String userSalary = textSalary.text;
-                          // ProfileInfo.createProfile(
-                          //     userName,
-                          //     userAge,
-                          //     userAddress,
-                          //     userNumber,
-                          //     userPosition,
-                          //     userSalary);
-
                           sharedPref.save("user", userSave);
                           print("Profile Saved");
                           loadSharedPrefs();
@@ -597,26 +583,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 }
 
-// class ProfileInfo {
-//   static String userName = "Hatdog";
-//   static String userAge = "20";
-//   static String userAddress = "Home Address";
-//   static String userNumber = "09123456789";
-//   static String userPosition = "Tambay";
-//   static String userSalary = "0";
-
-//   ProfileInfo.createProfile(String userName, String userAge, String userAddress,
-//       String userNumber, String userPosition, String userSalary) {
-//     ProfileInfo.userName = userName;
-//     ProfileInfo.userAge = userAge;
-//     ProfileInfo.userAddress = userAddress;
-//     ProfileInfo.userNumber = userNumber;
-//     ProfileInfo.userPosition = userPosition;
-//     ProfileInfo.userSalary = userSalary;
-//   }
-// Working Profile Classs
-// }
-
 class ProfileInfo {
   // static String userName = "User Name";
   // static String userAge = "Age";
@@ -636,15 +602,23 @@ class ProfileInfo {
   // }
   // ProfileInfo();
 
-  String userName = "User Name";
-  String userAge = "Age";
-  String userAddress = "Home Address";
-  String userNumber = "09-XXXXX";
-  String userPosition = "Work Position";
-  String userSalary = "150";
+  var imagePath;
+  String userName;
+  String userAge;
+  String userAddress;
+  String userNumber;
+  String userPosition;
+  String userSalary;
 
-  ProfileInfo.createProfile(String userName, String userAge, String userAddress,
-      String userNumber, String userPosition, String userSalary) {
+  ProfileInfo.createProfile(
+      var imagePath,
+      String userName,
+      String userAge,
+      String userAddress,
+      String userNumber,
+      String userPosition,
+      String userSalary) {
+    imagePath = imagePath;
     userName = userName;
     userAge = userAge;
     userAddress = userAddress;
@@ -652,22 +626,25 @@ class ProfileInfo {
     userPosition = userPosition;
     userSalary = userSalary;
   }
+
   ProfileInfo();
 
   ProfileInfo.fromJson(Map<String, dynamic> json)
-      : userName = json['userName'],
+      : imagePath = json['imagePath'],
+        userName = json['userName'],
         userAge = json['userAge'],
         userAddress = json['userAddress'],
         userNumber = json['userNumber'],
         userPosition = json['userPosition'],
         userSalary = json['userSalary'];
   Map<String, dynamic> toJson() => {
-        'userName' : userName,
-        'userAge' : userAge,
-        'userAddress' : userAddress,
-        'userNumber' : userNumber,
-        'userPosition' : userPosition,
-        'userSalary' : userSalary,
+        'imagePath': imagePath,
+        'userName': userName,
+        'userAge': userAge,
+        'userAddress': userAddress,
+        'userNumber': userNumber,
+        'userPosition': userPosition,
+        'userSalary': userSalary,
       };
 }
 

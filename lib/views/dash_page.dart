@@ -7,7 +7,6 @@ import 'package:clock_app/neumorphic_expenses/pie_chart_view.dart';
 import 'package:clock_app/views/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:image_picker/image_picker.dart';
 
 class DashPage extends StatefulWidget {
   @override
@@ -15,7 +14,6 @@ class DashPage extends StatefulWidget {
 }
 
 class _DashPageState extends State<DashPage> {
-  PickedFile _imageFile;
   AlarmHelper _alarmHelper = AlarmHelper();
   SharedPref sharedPref = SharedPref();
   ProfileInfo userLoad = ProfileInfo();
@@ -26,10 +24,10 @@ class _DashPageState extends State<DashPage> {
 
   @override
   void initState() {
+    loadSharedPrefs();
     _alarmHelper.initializeDatabase().then((value) {
       print('------database intialized');
       loadAlarms();
-      loadSharedPrefs();
     });
     super.initState();
   }
@@ -64,9 +62,11 @@ class _DashPageState extends State<DashPage> {
     var formattedDate = DateFormat('EEE, d MMM yyyy').format(now);
     var sg = SalaryGrade();
 
-    String _userName = userLoad.userName ?? "";
-    String _userSalary = userLoad.userSalary ?? "";
-    //String _userName = ProfileInfo.userName;
+    String _userName = userLoad.userName ?? "Username";
+    var _userNameTruncated = _userName.replaceRange(7, _userName.length, '..');
+    String _userSalary = userLoad.userSalary ?? "0";
+    String _userPosition = userLoad.userPosition ?? "Work Position";
+    // var _userPositionTruncated = _userPosition.replaceRange(10, _userPosition.length, '..');
     sg.getGrade = int.parse(_userSalary);
 
     return Container(
@@ -79,7 +79,7 @@ class _DashPageState extends State<DashPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  'Hi $_userName',
+                  'Hi $_userNameTruncated',
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: CustomColors.primaryTextColor,
@@ -108,9 +108,9 @@ class _DashPageState extends State<DashPage> {
               ),
               child: CircleAvatar(
                 radius: 30.0,
-                backgroundImage: _imageFile == null
+                backgroundImage: userLoad.imagePath == null
                     ? AssetImage('images/profile-default.png')
-                    : FileImage(File(_imageFile.path)),
+                    : FileImage(File(userLoad.imagePath)),
               ),
             ),
           ],
@@ -297,7 +297,8 @@ class _DashPageState extends State<DashPage> {
                     children: <Widget>[
                       ///////////////////////// Total plan cost
                       Text(
-                        userLoad.userPosition,
+                        _userPosition,
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: CustomColors.primaryTextColor,
@@ -465,7 +466,7 @@ class _DashPageState extends State<DashPage> {
                       ],
                     ),
                     SizedBox(
-                      height: 5,
+                      height: 10,
                     ),
                     Text(
                       'Upcomming subscriptions',
