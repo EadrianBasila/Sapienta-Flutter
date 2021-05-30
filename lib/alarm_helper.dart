@@ -1,4 +1,5 @@
 import 'package:clock_app/models/alarm_info.dart';
+import 'package:clock_app/neumorphic_expenses/pie_chart.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 
@@ -38,7 +39,8 @@ class AlarmHelper {
       path,
       version: 1,
       onCreate: (db, version) {
-        db.execute('''
+        db.execute(
+            '''
           create table $tableAlarm ( 
           $columnId integer primary key autoincrement, 
           $columnTitle text not null,
@@ -51,6 +53,14 @@ class AlarmHelper {
       },
     );
     return database;
+  }
+
+  Future<int> getCount() async {
+    //database connection
+    var db = await this.database;
+    var x = await db.rawQuery('SELECT COUNT (*) from $tableAlarm');
+    int count = Sqflite.firstIntValue(x);
+    return Future.value(count);
   }
 
   void insertAlarm(AlarmInfo alarmInfo) async {
@@ -67,9 +77,24 @@ class AlarmHelper {
     result.forEach((element) {
       var alarmInfo = AlarmInfo.fromMap(element);
       _alarms.add(alarmInfo);
+      //kCategories.add(alarmInfo);
     });
 
     return _alarms;
+  }
+
+  Future<List<Category>> getPlans() async {
+    List<Category> _plans = [];
+
+    var db = await this.database;
+    var result = await db.query(tableAlarm);
+    result.forEach((element) {
+      var alarmInfo = AlarmInfo.fromMap(element);
+      ////////////////////////////////_plans.add(alarmInfo);
+      //kCategories.add(alarmInfo);
+    });
+
+    return _plans;
   }
 
   Future<int> delete(int id) async {

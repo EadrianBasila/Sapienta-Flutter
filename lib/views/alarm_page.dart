@@ -597,40 +597,32 @@ class _AlarmPageState extends State<AlarmPage> {
   //void onSaveAlarm(String _subscriptionTitle, bool _isRepeating) {
   void onSaveAlarm(String _subscriptionTitle, String _planCost,
       bool _isRepeating, String _alarmFrequency, String _alarmDateString) {
-    String pTitle = _subscriptionTitle;
-    String cost = _planCost;
-    int freq = int.parse(_alarmFrequency);
-    int max = 5;
-    int randomNumber = Random().nextInt(max);
-    DateTime scheduleAlarmDateTime;
-    scheduleAlarmDateTime = _alarmTime.add(Duration(days: freq));
-    var alarmInfo = AlarmInfo(
-      alarmDateTime: scheduleAlarmDateTime,
-      gradientColorIndex: randomNumber,
-      title: '$_alarmDateString',
-      planTitle: '$pTitle',
-      planCost: '$cost',
-    );
+      
+      String pTitle = _subscriptionTitle;
+      String cost = _planCost;
+      int freq = int.parse(_alarmFrequency);
+      int max = 10;
+      int randomNumber = Random().nextInt(max);
 
-    print(
-        "==================================================================================================================================================================");
-    print(alarmInfo.planTitle);
-    print(alarmInfo.planCost);
+      DateTime scheduleAlarmDateTime;
+      scheduleAlarmDateTime = _alarmTime.add(Duration(days: freq));
+      var alarmInfo = AlarmInfo(
+        alarmDateTime: scheduleAlarmDateTime,
+        gradientColorIndex: randomNumber,
+        title: '$_alarmDateString',
+        planTitle: '$pTitle',
+        planCost: '$cost',
+      );
+
     _alarmHelper.insertAlarm(alarmInfo);
-    print(
-        "==================================================================================================================================================================");
-    scheduleAlarm(
-      scheduleAlarmDateTime,
-      alarmInfo,
-      isRepeating: _isRepeating,
-    );
+   
+    scheduleAlarm(scheduleAlarmDateTime,alarmInfo,isRepeating: _isRepeating,);
     Navigator.pop(context);
     loadAlarms();
   }
 
   void deleteAlarm(int id) {
     _alarmHelper.delete(id);
-
     //unsubscribe for notification
     loadAlarms();
   }

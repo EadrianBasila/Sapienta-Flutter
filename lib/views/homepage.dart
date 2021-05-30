@@ -2,7 +2,6 @@ import 'package:clock_app/constants/theme_data.dart';
 import 'package:clock_app/data.dart';
 import 'package:clock_app/enums.dart';
 import 'package:clock_app/models/menu_info.dart';
-import 'package:clock_app/neumorphic_expenses/monthly_expenses_view.dart';
 import 'package:clock_app/views/alarm_page.dart';
 import 'package:clock_app/views/clock_page.dart';
 import 'package:clock_app/views/profile_page.dart';
@@ -45,8 +44,8 @@ class _HomePageState extends State<HomePage> {
                   return ProfilePage();
                 else if (value.menuType == MenuType.home)
                   return DashPage();
-                else if (value.menuType == MenuType.statistics)
-                  return MonthlyExpensesView();
+                // else if (value.menuType == MenuType.statistics)
+                //   return MonthlyExpensesView();
                 else
                   return Container(
                     child: RichText(

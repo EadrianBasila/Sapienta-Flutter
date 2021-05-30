@@ -21,13 +21,13 @@ class PieChart extends CustomPainter {
       ..strokeWidth = width / 2;
 
     double total = 0;
-    categories.forEach((expense) => total += expense.amount);
+    categories.forEach((expense) => total += expense.planCost);
 
     double startRadian = -pi / 2;
 
     for (var index = 0; index < categories.length; index++) {
       final currentCategory = categories.elementAt(index);
-      final sweepRadian = currentCategory.amount / total * 2 * pi;
+      final sweepRadian = currentCategory.planCost / total * 2 * pi;
       paint.color = kNeumorphicColors.elementAt(index % categories.length);
       canvas.drawArc(
         Rect.fromCircle(center: center, radius: radius),
@@ -48,18 +48,18 @@ class PieChart extends CustomPainter {
 class PlanVals {}
 
 class Category {
-  Category(this.name, {@required this.amount});
-  final String name;
-  final double amount;
+  Category(this.planTitle, {@required this.planCost});
+  final String planTitle;
+  final double planCost;
 }
 
-final kCategories = [
-  Category('Netflix', amount: 500.00),
-  Category('Youtube', amount: 150.00),
-  Category('Spotify', amount: 90.00),
-  Category('HBO Max', amount: 90.00),
-  Category('Roku Family', amount: 40.00),
-  Category('Hulu +', amount: 20.00),
+var kCategories = [
+  Category('Netflix', planCost: 500.00),
+  Category('Youtube', planCost: 150.00),
+  Category('Spotify', planCost: 90.00),
+  Category('HBO Max', planCost: 90.00),
+  Category('Roku Family', planCost: 40.00),
+  Category('Hulu +', planCost: 20.00),
 ];
 
 final kNeumorphicColors = [

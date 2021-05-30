@@ -15,7 +15,7 @@ class CategoriesRow extends StatelessWidget {
           children: <Widget>[
             for (var category in kCategories)
               ExpenseCategory(
-                  text: category.name, index: kCategories.indexOf(category))
+                  text: category.planTitle, index: kCategories.indexOf(category))
           ],
         ));
   }

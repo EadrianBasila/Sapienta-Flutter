@@ -72,8 +72,8 @@ class _ProfilePageState extends State<ProfilePage> {
               boxShadow: [
                 BoxShadow(
                     color: CustomColors.menuBackgroundColor,
-                    blurRadius: 8,
-                    spreadRadius: 2,
+                    blurRadius: 4,
+                    spreadRadius: 4,
                     offset: Offset(1, 1)),
               ],
             ),
@@ -85,8 +85,8 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ),
           Positioned(
-            bottom: 20.0,
-            right: 20.0,
+            bottom: 10.0,
+            right: 10.0,
             child: InkWell(
               onTap: () {
                 showModalBottomSheet(
@@ -95,7 +95,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
               },
               child: Icon(Icons.camera_alt_rounded,
-                  color: Colors.white, size: 25.0),
+                  color: Colors.deepPurple[900], size: 20.0),
             ),
           ),
         ],
@@ -108,19 +108,24 @@ class _ProfilePageState extends State<ProfilePage> {
       height: 100.0,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10), color: Color(0xFF2D2F41)),
-      margin: EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 20,
+            gradient: LinearGradient(
+                      colors: GradientColors.fresco,
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                    ),
+      //borderRadius: BorderRadius.only( topRight: Radius.circular(20), 
+      //topLeft: Radius.circular(20)),
       ),
+
       child: Column(
         children: <Widget>[
+          SizedBox(height: 10),
           Text("Choose Profile Image",
               style: TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                   color: Colors.white)),
-          SizedBox(height: 10),
+          SizedBox(height: 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -206,7 +211,7 @@ class _ProfilePageState extends State<ProfilePage> {
               isDense: true,
               prefixIcon: Icon(
                 Icons.face_unlock_rounded,
-                color: Colors.white,
+                color: Colors.deepPurple[900],
                 size: 24,
               )),
           /////using shared preferences
@@ -259,7 +264,7 @@ class _ProfilePageState extends State<ProfilePage> {
               isDense: true,
               prefixIcon: Icon(
                 Icons.calendar_today,
-                color: Colors.white,
+                color: Colors.deepPurple[900],
                 size: 24,
               )),
           /////using shared preferences
@@ -311,7 +316,7 @@ class _ProfilePageState extends State<ProfilePage> {
               isDense: true,
               prefixIcon: Icon(
                 Icons.home_rounded,
-                color: Colors.white,
+                color: Colors.deepPurple[900],
                 size: 24,
               )),
           /////using shared preferences
@@ -363,7 +368,7 @@ class _ProfilePageState extends State<ProfilePage> {
               isDense: true,
               prefixIcon: Icon(
                 Icons.phone,
-                color: Colors.white,
+                color: Colors.deepPurple[900],
                 size: 24,
               )),
           /////using shared preferences
@@ -417,7 +422,7 @@ class _ProfilePageState extends State<ProfilePage> {
               isDense: true,
               prefixIcon: Icon(
                 Icons.badge,
-                color: Colors.white,
+                color: Colors.deepPurple[900],
                 size: 24,
               )),
           /////using shared preferences
@@ -470,7 +475,7 @@ class _ProfilePageState extends State<ProfilePage> {
               isDense: true,
               prefixIcon: Icon(
                 Icons.attach_money_rounded,
-                color: Colors.white,
+                color:Colors.deepPurple[900],
                 size: 24,
               )),
           /////using shared preferences
@@ -505,7 +510,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             userLoad.userName ?? "User",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                color: CustomColors.primaryTextColor,
+                                color: Colors.deepPurple[900],
                                 fontSize: 22),
                           ),
                           Text(
@@ -516,7 +521,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 fontSize: 16),
                           ),
                           Text(
-                            userLoad.userSalary ?? "150",
+                            userLoad.userAddress ?? "Home",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: CustomColors.primaryTextColor,
@@ -551,7 +556,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Text(
                           'Save Profile',
                           style: TextStyle(
-                            fontSize: 15.0,
+                            fontSize: 20.0,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -563,6 +568,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0),
                             )),
+                        
                       ),
                       SizedBox(width: 10),
                       Text(
