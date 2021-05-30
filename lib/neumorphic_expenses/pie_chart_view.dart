@@ -43,7 +43,8 @@ class PieChartView extends StatelessWidget {
                 child: Center(),
                 foregroundPainter: PieChart(
                   width: constraint.maxWidth*0.5,
-                  categories: kCategories,                                 
+                  categories: kCategories.toList(),
+                  //categories: kCategories.toList(),                                 
                 ),
               ),
             ),

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-
 class PieChart extends CustomPainter {
   PieChart({
     @required this.categories,
     @required this.width,
   });
-  final List<Category> categories;
-  final double width;
+
+
+  List<Category> categories;
+  double width;
 
   @override
   void paint(Canvas canvas, Size size) {
     Offset center = Offset(size.width / 2, size.height / 2);
     double radius = min(size.width / 2, size.height / 2);
-
 
     var paint = Paint()
       ..style = PaintingStyle.stroke
@@ -40,7 +40,6 @@ class PieChart extends CustomPainter {
     }
   }
 
-
   @override
   shouldRepaint(CustomPainter oldDelegate) => true;
 }
@@ -49,18 +48,20 @@ class PlanVals {}
 
 class Category {
   Category(this.planTitle, {@required this.planCost});
-  final String planTitle;
-  final double planCost;
+   String planTitle;
+   double planCost;
 }
 
-var kCategories = [
-  Category('Netflix', planCost: 500.00),
-  Category('Youtube', planCost: 150.00),
-  Category('Spotify', planCost: 90.00),
-  Category('HBO Max', planCost: 90.00),
-  Category('Roku Family', planCost: 40.00),
-  Category('Hulu +', planCost: 20.00),
-];
+var kCategories = [];
+
+// var kCategories = [
+//   Category('Netflix', planCost: 500.00),
+//   Category('Youtube', planCost: 150.00),
+//   Category('Spotify', planCost: 90.00),
+//   Category('HBO Max', planCost: 90.00),
+//   Category('Roku Family', planCost: 40.00),
+//   Category('Hulu +', planCost: 20.00),
+// ];
 
 final kNeumorphicColors = [
   Color.fromRGBO(82, 98, 255, 1),

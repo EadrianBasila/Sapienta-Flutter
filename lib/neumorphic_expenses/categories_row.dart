@@ -15,7 +15,8 @@ class CategoriesRow extends StatelessWidget {
           children: <Widget>[
             for (var category in kCategories)
               ExpenseCategory(
-                  text: category.planTitle, index: kCategories.indexOf(category))
+                  text: category.planTitle,
+                  index: kCategories.indexOf(category))
           ],
         ));
   }
@@ -33,22 +34,31 @@ class ExpenseCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Row(
-        children: <Widget>[
-          Container(
-            width: 8,
-            height: 8,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color:
-                  kNeumorphicColors.elementAt(index % kNeumorphicColors.length),
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Row(
+          children: <Widget>[
+            Container(
+              width: 8,
+              height: 8,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: kNeumorphicColors
+                    .elementAt(index % kNeumorphicColors.length),
+              ),
             ),
-          ),
-          SizedBox(width: 5),
-          Text(text, style: TextStyle(fontSize: 12, color: Colors.black, fontWeight: FontWeight.bold),)
-        ],
+            SizedBox(width: 5),
+            Text(
+              text,
+              style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold),
+            )
+          ],
+        ),
       ),
     );
   }

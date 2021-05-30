@@ -1,7 +1,8 @@
 import 'package:clock_app/models/alarm_info.dart';
-import 'package:clock_app/neumorphic_expenses/pie_chart.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
+
+import 'neumorphic_expenses/pie_chart.dart';
 
 final String tableAlarm = 'alarm';
 final String columnId = 'id';
@@ -77,24 +78,50 @@ class AlarmHelper {
     result.forEach((element) {
       var alarmInfo = AlarmInfo.fromMap(element);
       _alarms.add(alarmInfo);
+
       //kCategories.add(alarmInfo);
     });
 
     return _alarms;
   }
 
-  Future<List<Category>> getPlans() async {
-    List<Category> _plans = [];
-
+  void getPlans() async {
+    List<Category> _kcat = [];
     var db = await this.database;
     var result = await db.query(tableAlarm);
-    result.forEach((element) {
-      var alarmInfo = AlarmInfo.fromMap(element);
-      ////////////////////////////////_plans.add(alarmInfo);
-      //kCategories.add(alarmInfo);
-    });
+    if (result != null) {
+      result.forEach((element) {
+        var alarmInfo = AlarmInfo.fromMap(element);
+        var cost = double.parse(alarmInfo.planCost);
+        var title = alarmInfo.planTitle.toString();
+        var ins = Category(title, planCost: cost);
+        //kCategories.add(ins);
+        _kcat.add(ins);
+        print('Added: $title $cost');
+      });
+      //kCategories = List.from(_kcat);
+      kCategories = _kcat;
+      print('============================================');
+      print('DATA LOADED');
+      print('============================================');
+    }
+  }
 
-    return _plans;
+  Future<double> getCost() async {
+    var db = await this.database;
+    var result = await db.query(tableAlarm);
+    double costTotal = 0.0;
+    if (result != null) {
+      result.forEach((element) {
+        var alarmInfo = AlarmInfo.fromMap(element);
+        var cost = double.parse(alarmInfo.planCost);
+        print(cost);
+        costTotal += cost;
+        print(costTotal);
+      });
+    }
+    print("Total: $costTotal");
+    return Future.value(costTotal);
   }
 
   Future<int> delete(int id) async {
