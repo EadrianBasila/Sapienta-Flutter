@@ -597,26 +597,29 @@ class _AlarmPageState extends State<AlarmPage> {
   //void onSaveAlarm(String _subscriptionTitle, bool _isRepeating) {
   void onSaveAlarm(String _subscriptionTitle, String _planCost,
       bool _isRepeating, String _alarmFrequency, String _alarmDateString) {
-      
-      String pTitle = _subscriptionTitle;
-      String cost = _planCost;
-      int freq = int.parse(_alarmFrequency);
-      int max = 10;
-      int randomNumber = Random().nextInt(max);
+    String pTitle = _subscriptionTitle;
+    String cost = _planCost;
+    int freq = int.parse(_alarmFrequency);
+    int max = 10;
+    int randomNumber = Random().nextInt(max);
 
-      DateTime scheduleAlarmDateTime;
-      scheduleAlarmDateTime = _alarmTime.add(Duration(days: freq));
-      var alarmInfo = AlarmInfo(
-        alarmDateTime: scheduleAlarmDateTime,
-        gradientColorIndex: randomNumber,
-        title: '$_alarmDateString',
-        planTitle: '$pTitle',
-        planCost: '$cost',
-      );
+    DateTime scheduleAlarmDateTime;
+    scheduleAlarmDateTime = _alarmTime.add(Duration(days: freq));
+    var alarmInfo = AlarmInfo(
+      alarmDateTime: scheduleAlarmDateTime,
+      gradientColorIndex: randomNumber,
+      title: '$_alarmDateString',
+      planTitle: '$pTitle',
+      planCost: '$cost',
+    );
 
     _alarmHelper.insertAlarm(alarmInfo);
-   
-    scheduleAlarm(scheduleAlarmDateTime,alarmInfo,isRepeating: _isRepeating,);
+
+    scheduleAlarm(
+      scheduleAlarmDateTime,
+      alarmInfo,
+      isRepeating: _isRepeating,
+    );
     Navigator.pop(context);
     loadAlarms();
   }

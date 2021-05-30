@@ -241,6 +241,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       child: TextFormField(
           controller: textAge,
+          keyboardType: TextInputType.number,
           style: TextStyle(color: Colors.white, fontSize: 24),
           cursorColor: Colors.white,
           validator: (String value) {
