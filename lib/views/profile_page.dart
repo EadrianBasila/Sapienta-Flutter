@@ -346,6 +346,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       child: TextFormField(
           controller: textNumber,
+          keyboardType: TextInputType.number,
           style: TextStyle(color: Colors.white, fontSize: 24),
           validator: (String value) {
             if (value.isEmpty) {

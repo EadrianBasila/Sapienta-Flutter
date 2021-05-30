@@ -7,7 +7,6 @@ class PieChart extends CustomPainter {
     @required this.width,
   });
 
-
   List<Category> categories;
   double width;
 
@@ -52,16 +51,18 @@ class Category {
    double planCost;
 }
 
-var kCategories = [];
+var kCategories = [
 
-// var kCategories = [
-//   Category('Netflix', planCost: 500.00),
-//   Category('Youtube', planCost: 150.00),
-//   Category('Spotify', planCost: 90.00),
-//   Category('HBO Max', planCost: 90.00),
-//   Category('Roku Family', planCost: 40.00),
-//   Category('Hulu +', planCost: 20.00),
-// ];
+];
+
+var kCategoriesB = [
+  Category('Netflix', planCost: 500.00),
+  Category('Youtube', planCost: 150.00),
+  Category('Spotify', planCost: 90.00),
+  Category('HBO Max', planCost: 90.00),
+  Category('Roku Family', planCost: 40.00),
+  Category('Hulu +', planCost: 20.00),
+];
 
 final kNeumorphicColors = [
   Color.fromRGBO(82, 98, 255, 1),

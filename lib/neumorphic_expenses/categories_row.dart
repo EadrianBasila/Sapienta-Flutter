@@ -12,7 +12,7 @@ class CategoriesRow extends StatelessWidget {
         flex: 3,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
+          children: <Widget>[           
             for (var category in kCategories)
               ExpenseCategory(
                   text: category.planTitle,
