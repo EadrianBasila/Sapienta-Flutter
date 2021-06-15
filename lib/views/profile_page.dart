@@ -48,7 +48,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ProfileInfo user = ProfileInfo.fromJson(await sharedPref.read("user"));
       // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
-          content: new Text("Loaded!"),
+          content: new Text("Data Loaded!"),
           duration: const Duration(milliseconds: 500)));
       setState(() {
         userLoad = user;
@@ -56,7 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
     } catch (Excepetion) {
       // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
-          content: new Text("Nothing found!"),
+          content: new Text("No Data Available"),
           duration: const Duration(milliseconds: 500)));
     }
   }
@@ -108,15 +108,14 @@ class _ProfilePageState extends State<ProfilePage> {
       height: 100.0,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-            gradient: LinearGradient(
-                      colors: GradientColors.fresco,
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                    ),
-      //borderRadius: BorderRadius.only( topRight: Radius.circular(20), 
-      //topLeft: Radius.circular(20)),
+        gradient: LinearGradient(
+          colors: GradientColors.fresco,
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+        ),
+        //borderRadius: BorderRadius.only( topRight: Radius.circular(20),
+        //topLeft: Radius.circular(20)),
       ),
-
       child: Column(
         children: <Widget>[
           SizedBox(height: 10),
@@ -477,7 +476,7 @@ class _ProfilePageState extends State<ProfilePage> {
               isDense: true,
               prefixIcon: Icon(
                 Icons.attach_money_rounded,
-                color:Colors.deepPurple[900],
+                color: Colors.deepPurple[900],
                 size: 24,
               )),
           /////using shared preferences
@@ -497,93 +496,94 @@ class _ProfilePageState extends State<ProfilePage> {
           Expanded(
             child: Form(
               key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      _buildImage(),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            userLoad.userName ?? "User",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.deepPurple[900],
-                                fontSize: 22),
-                          ),
-                          Text(
-                            userLoad.userPosition ?? "Position",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.primaryTextColor,
-                                fontSize: 16),
-                          ),
-                          Text(
-                            userLoad.userAddress ?? "Home",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: CustomColors.primaryTextColor,
-                                fontSize: 12),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 20.0),
-                  _buildUsername(),
-                  _buildAge(),
-                  _buildAddress(),
-                  _buildNumber(),
-                  _buildPosition(),
-                  _buildSalary(),
-                  SizedBox(height: 10.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      ElevatedButton(
-                        onPressed: () {
-                          if (!_formKey.currentState.validate()) {
-                            return;
-                          }
-                          _formKey.currentState.save();
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        _buildImage(),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              userLoad.userName ?? "User",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.deepPurple[900],
+                                  fontSize: 22),
+                            ),
+                            Text(
+                              userLoad.userPosition ?? "Position",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: CustomColors.primaryTextColor,
+                                  fontSize: 16),
+                            ),
+                            Text(
+                              userLoad.userAddress ?? "Home",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: CustomColors.primaryTextColor,
+                                  fontSize: 12),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),                    
+                    SizedBox(height: 20.0),              
+                    _buildUsername(),
+                    _buildAge(),
+                    _buildAddress(),
+                    _buildNumber(),
+                    _buildPosition(),
+                    _buildSalary(),
+                    SizedBox(height: 10.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        ElevatedButton(
+                          onPressed: () {
+                            if (!_formKey.currentState.validate()) {
+                              return;
+                            }
+                            _formKey.currentState.save();
 
-                          sharedPref.save("user", userSave);
-                          print("Profile Saved");
-                          loadSharedPrefs();
-                        },
-                        child: Text(
-                          'Save Profile',
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
+                            sharedPref.save("user", userSave);
+                            print("Profile Saved");
+                            loadSharedPrefs();
+                          },
+                          child: Text(
+                            'Save Profile',
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
+                          style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 15),
+                              primary: Colors.deepPurple[900],
+                              onPrimary: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              )),
                         ),
-                        style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 15),
-                            primary: Colors.deepPurple[900],
-                            onPrimary: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            )),
-                        
-                      ),
-                      SizedBox(width: 10),
-                      Text(
-                        'On-Premise DB',
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          color: Colors.white24,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      )
-                    ],
-                  ),
-                ],
+                        SizedBox(width: 10),
+                        Text(
+                          'On-Premise DB',
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            color: Colors.white24,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           )

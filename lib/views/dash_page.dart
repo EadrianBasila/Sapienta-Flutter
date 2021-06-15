@@ -8,6 +8,7 @@ import 'package:clock_app/neumorphic_expenses/pie_chart_view.dart';
 import 'package:clock_app/views/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class DashPage extends StatefulWidget {
   @override
@@ -21,6 +22,9 @@ class _DashPageState extends State<DashPage> {
   static var _planCount;
   static var _cost;
   int condition = 0;
+
+  //List<SalesData> _chartData;
+  TooltipBehavior _tooltipBehavior;
 
   /////////////////////////////////
   Future<List<AlarmInfo>> _alarms;
@@ -39,6 +43,10 @@ class _DashPageState extends State<DashPage> {
       _cost = value.toInt();
     });
 
+    //_chartData = getChartData();
+    getChartData();
+    _tooltipBehavior = TooltipBehavior(
+        enable: true, color: Colors.deepPurple[900], animationDuration: 1000);
     super.initState();
   }
 
@@ -50,7 +58,6 @@ class _DashPageState extends State<DashPage> {
   }
 
   ///////////////////////////////////
-
   loadSharedPrefs() async {
     try {
       ProfileInfo user = ProfileInfo.fromJson(await sharedPref.read("user"));
@@ -353,7 +360,7 @@ class _DashPageState extends State<DashPage> {
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: GradientColors.retro,
+                        colors: GradientColors.fire,
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
                       ),
@@ -405,11 +412,94 @@ class _DashPageState extends State<DashPage> {
                 Expanded(
                   flex: 2,
                   child: Container(
+                      height: 200,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: CustomColors.menuBackgroundColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: CustomColors.menuBackgroundColor,
+                            blurRadius: 8,
+                            spreadRadius: 2,
+                            offset: Offset(1, 1),
+                          ),
+                        ],
+                        borderRadius: BorderRadius.all(Radius.circular(25)),
+                      ),
+                      child: Scaffold(
+                          body: SfCartesianChart(
+                        backgroundColor: CustomColors.menuBackgroundColor,
+                        plotAreaBackgroundColor:
+                            CustomColors.menuBackgroundColor,
+                        tooltipBehavior: _tooltipBehavior,
+                        series: <ChartSeries>[
+                          LineSeries<SalesData, String>(
+                              name: 'Plan',
+                              dataSource: kchartData,
+                              xValueMapper: (SalesData sales, _) => sales.month,
+                              yValueMapper: (SalesData sales, _) => sales.sales,
+                              dataLabelSettings:
+                                  DataLabelSettings(isVisible: true),
+                              enableTooltip: true)
+                        ],
+                        primaryXAxis: CategoryAxis(
+                          edgeLabelPlacement: EdgeLabelPlacement.shift,
+                        ),
+                        primaryYAxis: NumericAxis(
+                          labelFormat: '{value}',
+                        ),
+                      ))),
+                ),
+              ],
+            )),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'Insert Current Month Statistics',
+                  style: TextStyle(
+                      color: CustomColors.primaryTextColor, fontSize: 12),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                TextButton(
+                  onPressed: () {
+                    var index = kchartData.length;
+                    print("===============================");
+                    print("index: $index");
+                    print(monthList[index + 1]);
+                    var newEntry =
+                        SalesData(monthList[index + 1], dynamicCost.toDouble());
+                    kchartData.add(newEntry);
+                    print("===============================");
+                    getChartData();
+                  },
+                  child: Text(
+                    'Add',
+                    style: TextStyle(
+                      color: Colors.deepPurple[900],
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            IntrinsicHeight(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Expanded(
+                  flex: 2,
+                  child: Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: GradientColors.retro,
+                        colors: GradientColors.sunset,
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
                       ),
@@ -433,7 +523,8 @@ class _DashPageState extends State<DashPage> {
                         Row(
                           children: [
                             Text(
-                              kCategories.first.planTitle ?? "Subscription",
+                              "PLAN - " + kCategories.first.planTitle ??
+                                  "Subscription",
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: CustomColors.primaryTextColor,
@@ -468,6 +559,9 @@ class _DashPageState extends State<DashPage> {
                 ),
               ],
             )),
+            SizedBox(
+              height: 10,
+            ),
           ]));
     else
       return Container(
@@ -475,12 +569,60 @@ class _DashPageState extends State<DashPage> {
           text: TextSpan(
             style: TextStyle(fontSize: 20),
             children: <TextSpan>[
-              TextSpan(text: 'No Data Available'),
+              TextSpan(text: ' No Data Available\n'),
+              TextSpan(
+                  text: ' Please set-up your account first.',
+                  style: TextStyle(fontSize: 12)),
             ],
           ),
         ),
       );
   }
+
+  List<String> monthList = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
+  ];
+
+  //  List<SalesData> getChartData() {
+  //    List<SalesData> chartData = [
+  //      SalesData('Jan', 4000),
+  //      SalesData('Feb', 4500),
+  //      SalesData('Mar', 4600),
+  //      SalesData('Apr', 2500),
+  //      SalesData('May', 3500),
+  //    ];
+  //    return chartData;
+  //  }
+
+  void getChartData() async {
+    List<SalesData> chartData = [
+      SalesData('Jan', 4000),
+      SalesData('Feb', 4500),
+      SalesData('Mar', 4600),
+      SalesData('Apr', 2500),
+      SalesData('May', 3500),
+    ];
+    kchartData = chartData;
+  }
+}
+
+var kchartData = [];
+
+class SalesData {
+  SalesData(this.month, this.sales);
+  final String month;
+  final double sales;
 }
 
 class CheckCount {

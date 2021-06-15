@@ -70,7 +70,7 @@ class _AlarmPageState extends State<AlarmPage> {
                 fontSize: 24),
           ),
           Expanded(
-            flex: 2,
+            //Rflex: 2,
             child: FutureBuilder<List<AlarmInfo>>(
               future: _alarms,
               builder: (context, snapshot) {
@@ -208,295 +208,301 @@ class _AlarmPageState extends State<AlarmPage> {
                                 builder: (context) {
                                   return StatefulBuilder(
                                     builder: (context, setModalState) {
-                                      return Container(
-                                        decoration: BoxDecoration(
-                                          color: Color(0xFF2D2F41),
-                                          borderRadius: BorderRadius.only(
-                                              topRight: Radius.circular(25),
-                                              topLeft: Radius.circular(25)),
-                                        ),
-                                        padding: const EdgeInsets.only(
-                                            bottom: 32, left: 20, right: 20),
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
+                                      return Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Color(0xFF2D2F41),
+                                            borderRadius: BorderRadius.only(
+                                                topRight: Radius.circular(25),
+                                                topLeft: Radius.circular(25)),
+                                          ),
+                                          padding: const EdgeInsets.only(
+                                              bottom: 32, left: 20, right: 20),
+                                          child: SingleChildScrollView(
+                                            child: Column(
                                               children: [
-                                                TextButton(
-                                                  onPressed: () async {
-                                                    var selectedTime =
-                                                        await showTimePicker(
-                                                      context: context,
-                                                      initialTime:
-                                                          TimeOfDay.now(),
-                                                    );
-                                                    if (selectedTime != null) {
-                                                      final now =
-                                                          DateTime.now();
-                                                      var selectedDateTime =
-                                                          DateTime(
-                                                              now.year,
-                                                              now.month,
-                                                              now.day,
-                                                              selectedTime.hour,
-                                                              selectedTime
-                                                                  .minute);
-                                                      _alarmTime =
-                                                          selectedDateTime;
-                                                      setModalState(() {
-                                                        _alarmTimeString =
-                                                            DateFormat('HH:mm')
-                                                                .format(
-                                                                    selectedDateTime);
-                                                      });
-                                                    }
-                                                  },
-                                                  child: Text(
-                                                    _alarmTimeString,
+                                                Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.spaceEvenly,
+                                                  children: [
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        var selectedTime =
+                                                            await showTimePicker(
+                                                          context: context,
+                                                          initialTime:
+                                                              TimeOfDay.now(),
+                                                        );
+                                                        if (selectedTime != null) {
+                                                          final now =
+                                                              DateTime.now();
+                                                          var selectedDateTime =
+                                                              DateTime(
+                                                                  now.year,
+                                                                  now.month,
+                                                                  now.day,
+                                                                  selectedTime.hour,
+                                                                  selectedTime
+                                                                      .minute);
+                                                          _alarmTime =
+                                                              selectedDateTime;
+                                                          setModalState(() {
+                                                            _alarmTimeString =
+                                                                DateFormat('HH:mm')
+                                                                    .format(
+                                                                        selectedDateTime);
+                                                          });
+                                                        }
+                                                      },
+                                                      child: Text(
+                                                        _alarmTimeString,
+                                                        style: TextStyle(
+                                                            fontSize: 28,
+                                                            color: Colors.white),
+                                                      ),
+                                                    ),
+                                                    TextButton(
+                                                      onPressed: () async {
+                                                        await showDatePicker(
+                                                                context: context,
+                                                                firstDate:
+                                                                    DateTime(2001),
+                                                                initialDate:
+                                                                    DateTime.now(),
+                                                                lastDate:
+                                                                    DateTime(2100))
+                                                            .then((date) {
+                                                          setModalState(() {
+                                                            _dateTime = date;
+                                                            _alarmDateString =
+                                                                DateFormat(
+                                                                        'EEE, MMM d ')
+                                                                    .format(
+                                                                        _dateTime);
+                                                          });
+                                                        });
+                                                      },
+                                                      child: Text(
+                                                        _dateTime == null
+                                                            ? 'Plan Date'
+                                                            : _alarmDateString,
+                                                        style: TextStyle(
+                                                            fontSize: 24,
+                                                            color: Colors.white),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                ListTile(
+                                                  title: Text(
+                                                    'Notify Me Weekly',
                                                     style: TextStyle(
-                                                        fontSize: 28,
-                                                        color: Colors.white),
+                                                        color: Colors.white,
+                                                        fontSize: 14),
+                                                  ),
+                                                  trailing: Switch(
+                                                    activeColor: Colors.white,
+                                                    onChanged: (value) {
+                                                      setModalState(() {
+                                                        _isRepeatSelected = value;
+                                                      });
+                                                    },
+                                                    value: _isRepeatSelected,
                                                   ),
                                                 ),
-                                                TextButton(
-                                                  onPressed: () async {
-                                                    await showDatePicker(
-                                                            context: context,
-                                                            firstDate:
-                                                                DateTime(2001),
-                                                            initialDate:
-                                                                DateTime.now(),
-                                                            lastDate:
-                                                                DateTime(2100))
-                                                        .then((date) {
-                                                      setModalState(() {
-                                                        _dateTime = date;
-                                                        _alarmDateString =
-                                                            DateFormat(
-                                                                    'EEE, MMM d ')
-                                                                .format(
-                                                                    _dateTime);
-                                                      });
-                                                    });
-                                                  },
-                                                  child: Text(
-                                                    _dateTime == null
-                                                        ? 'Plan Date'
-                                                        : _alarmDateString,
+                                                SizedBox(height: 5),
+                                                Container(
+                                                  //padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                                  decoration: BoxDecoration(
+                                                      color: CustomColors
+                                                          .menuBackgroundColor,
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: CustomColors
+                                                              .menuBackgroundColor
+                                                              .withOpacity(0.5),
+                                                          blurRadius: 8,
+                                                          spreadRadius: 1,
+                                                        ),
+                                                      ],
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(25))),
+                                                  child: TextFormField(
                                                     style: TextStyle(
-                                                        fontSize: 28,
-                                                        color: Colors.white),
+                                                        color: Colors.white,
+                                                        fontSize: 22),
+                                                    controller: myController1,
+                                                    validator: (String value) {
+                                                      if (value.isEmpty) {
+                                                        return 'Enter Subscription Name';
+                                                      }
+                                                      return null;
+                                                    },
+                                                    decoration: InputDecoration(
+                                                        border: InputBorder.none,
+                                                        focusedBorder:
+                                                            InputBorder.none,
+                                                        enabledBorder:
+                                                            InputBorder.none,
+                                                        errorBorder:
+                                                            InputBorder.none,
+                                                        disabledBorder:
+                                                            InputBorder.none,
+                                                        labelText:
+                                                            'Subscription Name',
+                                                        labelStyle: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 12),
+                                                        filled: true,
+                                                        isDense: true,
+                                                        prefixIcon: Icon(
+                                                            Icons.class__rounded,
+                                                            color: Colors.white)),
+                                                  ),
+                                                ),
+                                                SizedBox(height: 5),
+                                                Container(
+                                                  //padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                                  decoration: BoxDecoration(
+                                                      color: CustomColors
+                                                          .menuBackgroundColor,
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: CustomColors
+                                                              .menuBackgroundColor
+                                                              .withOpacity(0.5),
+                                                          blurRadius: 8,
+                                                          spreadRadius: 1,
+                                                        ),
+                                                      ],
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(25))),
+                                                  child: TextFormField(
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 22),
+                                                    controller: myController2,
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    validator: (String value) {
+                                                      if (value.isEmpty) {
+                                                        return 'Enter Subscription Cost';
+                                                      }
+                                                      return null;
+                                                    },
+                                                    decoration: InputDecoration(
+                                                        border: InputBorder.none,
+                                                        focusedBorder:
+                                                            InputBorder.none,
+                                                        enabledBorder:
+                                                            InputBorder.none,
+                                                        errorBorder:
+                                                            InputBorder.none,
+                                                        disabledBorder:
+                                                            InputBorder.none,
+                                                        labelText:
+                                                            'Subscription Cost',
+                                                        labelStyle: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 12),
+                                                        filled: true,
+                                                        isDense: true,
+                                                        prefixIcon: Icon(
+                                                            Icons
+                                                                .local_atm_outlined,
+                                                            color: Colors.white)),
+                                                  ),
+                                                ),
+                                                SizedBox(height: 5),
+                                                Container(
+                                                  //padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                                  decoration: BoxDecoration(
+                                                      color: CustomColors
+                                                          .menuBackgroundColor,
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: CustomColors
+                                                              .menuBackgroundColor
+                                                              .withOpacity(0.5),
+                                                          blurRadius: 8,
+                                                          spreadRadius: 1,
+                                                        ),
+                                                      ],
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(25))),
+                                                  child: TextFormField(
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 22),
+                                                    controller: myController3,
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    validator: (String value) {
+                                                      if (value.isEmpty) {
+                                                        return 'Every [days: ]';
+                                                      }
+                                                      return null;
+                                                    },
+                                                    decoration: InputDecoration(
+                                                        border: InputBorder.none,
+                                                        focusedBorder:
+                                                            InputBorder.none,
+                                                        enabledBorder:
+                                                            InputBorder.none,
+                                                        errorBorder:
+                                                            InputBorder.none,
+                                                        disabledBorder:
+                                                            InputBorder.none,
+                                                        labelText:
+                                                            'Payment Frequency',
+                                                        labelStyle: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 12),
+                                                        filled: true,
+                                                        isDense: true,
+                                                        prefixIcon: Icon(
+                                                            Icons
+                                                                .access_alarms_rounded,
+                                                            color: Colors.white)),
+                                                  ),
+                                                ),
+                                                SizedBox(height: 5),
+                                                Container(
+                                                  child:
+                                                      FloatingActionButton.extended(
+                                                    onPressed: () {
+                                                      print(
+                                                          '++++++++++++++++++++++++++++++++++++++');
+                                                      _subscriptionTitle =
+                                                          myController1.text;
+                                                      _planCost =
+                                                          myController2.text;
+                                                      _alarmFrequency =
+                                                          myController3.text;
+                                                      print(
+                                                          '++++++++++++++++++++++++++++++++++++++');
+                                                      onSaveAlarm(
+                                                          _subscriptionTitle,
+                                                          _planCost,
+                                                          _isRepeatSelected,
+                                                          _alarmFrequency,
+                                                          _alarmDateString);
+                                                    },
+                                                    icon: Icon(Icons.alarm),
+                                                    label: Text('Save',
+                                                        style: TextStyle(
+                                                            fontSize: 24)),
                                                   ),
                                                 ),
                                               ],
                                             ),
-                                            ListTile(
-                                              title: Text(
-                                                'Notify Me Weekly',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 14),
-                                              ),
-                                              trailing: Switch(
-                                                activeColor: Colors.white,
-                                                onChanged: (value) {
-                                                  setModalState(() {
-                                                    _isRepeatSelected = value;
-                                                  });
-                                                },
-                                                value: _isRepeatSelected,
-                                              ),
-                                            ),
-                                            Container(
-                                              //padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                              decoration: BoxDecoration(
-                                                  color: CustomColors
-                                                      .menuBackgroundColor,
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: CustomColors
-                                                          .menuBackgroundColor
-                                                          .withOpacity(0.5),
-                                                      blurRadius: 8,
-                                                      spreadRadius: 1,
-                                                    ),
-                                                  ],
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(25))),
-                                              child: TextFormField(
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 22),
-                                                controller: myController3,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                validator: (String value) {
-                                                  if (value.isEmpty) {
-                                                    return 'Every [days: ]';
-                                                  }
-                                                  return null;
-                                                },
-                                                decoration: InputDecoration(
-                                                    border: InputBorder.none,
-                                                    focusedBorder:
-                                                        InputBorder.none,
-                                                    enabledBorder:
-                                                        InputBorder.none,
-                                                    errorBorder:
-                                                        InputBorder.none,
-                                                    disabledBorder:
-                                                        InputBorder.none,
-                                                    labelText:
-                                                        'Payment Frequency',
-                                                    labelStyle: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 12),
-                                                    filled: true,
-                                                    isDense: true,
-                                                    prefixIcon: Icon(
-                                                        Icons
-                                                            .access_alarms_rounded,
-                                                        color: Colors.white)),
-                                              ),
-                                            ),
-                                            SizedBox(height: 5),
-                                            Container(
-                                              //padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                              decoration: BoxDecoration(
-                                                  color: CustomColors
-                                                      .menuBackgroundColor,
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: CustomColors
-                                                          .menuBackgroundColor
-                                                          .withOpacity(0.5),
-                                                      blurRadius: 8,
-                                                      spreadRadius: 1,
-                                                    ),
-                                                  ],
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(25))),
-                                              child: TextFormField(
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 22),
-                                                controller: myController1,
-                                                validator: (String value) {
-                                                  if (value.isEmpty) {
-                                                    return 'Enter Subscription Name';
-                                                  }
-                                                  return null;
-                                                },
-                                                decoration: InputDecoration(
-                                                    border: InputBorder.none,
-                                                    focusedBorder:
-                                                        InputBorder.none,
-                                                    enabledBorder:
-                                                        InputBorder.none,
-                                                    errorBorder:
-                                                        InputBorder.none,
-                                                    disabledBorder:
-                                                        InputBorder.none,
-                                                    labelText:
-                                                        'Susbcription Name',
-                                                    labelStyle: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 12),
-                                                    filled: true,
-                                                    isDense: true,
-                                                    prefixIcon: Icon(
-                                                        Icons.class__rounded,
-                                                        color: Colors.white)),
-                                              ),
-                                            ),
-                                            SizedBox(height: 5),
-                                            Container(
-                                              //padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                              decoration: BoxDecoration(
-                                                  color: CustomColors
-                                                      .menuBackgroundColor,
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: CustomColors
-                                                          .menuBackgroundColor
-                                                          .withOpacity(0.5),
-                                                      blurRadius: 8,
-                                                      spreadRadius: 1,
-                                                    ),
-                                                  ],
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(25))),
-                                              child: TextFormField(
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 22),
-                                                controller: myController2,
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                validator: (String value) {
-                                                  if (value.isEmpty) {
-                                                    return 'Enter Subscription Cost';
-                                                  }
-                                                  return null;
-                                                },
-                                                decoration: InputDecoration(
-                                                    border: InputBorder.none,
-                                                    focusedBorder:
-                                                        InputBorder.none,
-                                                    enabledBorder:
-                                                        InputBorder.none,
-                                                    errorBorder:
-                                                        InputBorder.none,
-                                                    disabledBorder:
-                                                        InputBorder.none,
-                                                    labelText:
-                                                        'Subscription Cost',
-                                                    labelStyle: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 12),
-                                                    filled: true,
-                                                    isDense: true,
-                                                    prefixIcon: Icon(
-                                                        Icons
-                                                            .local_atm_outlined,
-                                                        color: Colors.white)),
-                                              ),
-                                            ),
-                                            SizedBox(height: 5),
-                                            Container(
-                                              child:
-                                                  FloatingActionButton.extended(
-                                                onPressed: () {
-                                                  print(
-                                                      '++++++++++++++++++++++++++++++++++++++');
-                                                  _subscriptionTitle =
-                                                      myController1.text;
-                                                  _planCost =
-                                                      myController2.text;
-                                                  _alarmFrequency =
-                                                      myController3.text;
-                                                  print(
-                                                      '++++++++++++++++++++++++++++++++++++++');
-                                                  onSaveAlarm(
-                                                      _subscriptionTitle,
-                                                      _planCost,
-                                                      _isRepeatSelected,
-                                                      _alarmFrequency,
-                                                      _alarmDateString);
-                                                },
-                                                icon: Icon(Icons.alarm),
-                                                label: Text('Save',
-                                                    style: TextStyle(
-                                                        fontSize: 24)),
-                                              ),
-                                            ),
-                                          ],
+                                          ),
                                         ),
                                       );
                                     },
@@ -545,7 +551,7 @@ class _AlarmPageState extends State<AlarmPage> {
       ),
     );
   }
-
+  
   void scheduleAlarm(
       DateTime scheduledNotificationDateTime, AlarmInfo alarmInfo,
       {bool isRepeating}) async {

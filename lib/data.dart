@@ -7,7 +7,7 @@ List<MenuInfo> menuItems = [
   MenuInfo(MenuType.home, title: 'Home', icon: 1),
   MenuInfo(MenuType.profile, title: 'Profile', icon: 2),
   MenuInfo(MenuType.alarm, title: 'Plans', icon: 3),
-  MenuInfo(MenuType.statistics, title: 'Statistics', icon: 4),
+  //MenuInfo(MenuType.statistics, title: 'Statistics', icon: 4),
 ];
 
 List<AlarmInfo> alarms = [
